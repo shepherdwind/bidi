@@ -1,5 +1,7 @@
 KISSY.add(function(S, Event, Model){
 
+  "use strict";
+
   function Form(obj){
 
     Model.apply(this, arguments);

@@ -1,12 +1,14 @@
 KISSY.add(function(S){
 
+  "use strict";
+
   function add(watch){
 
     watch.add('value', {
 
       init: function(){
 
-        $control = this.$control();
+        var $control = this.$control();
         S.mix(this, $control);
         this._render();
 

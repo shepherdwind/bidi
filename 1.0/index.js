@@ -5,6 +5,8 @@
  **/
 KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
 
+  "use strict";
+
   var EMPTY = '';
   var $ = Node.all;
   var Views = {};
@@ -32,8 +34,9 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
 
         } else {
 
-          id = Views[name].watch(params);
-          ret = ' id=' + id + ' ';
+          var o = Views[name].watch(params);
+          id = o.id;
+          ret = o.html;
 
         }
 
@@ -41,14 +44,15 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
 
         if (!id) {
 
-          id = Views[name].watch(params, option.fn);
+          var o = Views[name].watch(params, option.fn);
+          id = o.id;
           var model = Views[name].model;
 
           //scopes[len][params[0]] = model.get(params[0]);
           //重新计算，这时候model的value会有改变
           scopes[len][params[1]] = model.get(params[1]);
 
-          ret = '<span class=xform id=' + id  + '>';
+          ret = o.html;
           option.params[0] = scopes[0][params[1]];
           ret += option.commands.each(scopes, option);
           ret += '</span>';

@@ -1,5 +1,7 @@
 KISSY.add(function(S, evaluation){
 
+  "use strict";
+
   function Model(obj){
 
     this.attributes = {};

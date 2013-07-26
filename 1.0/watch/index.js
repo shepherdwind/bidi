@@ -1,5 +1,7 @@
 KISSY.add(function(S){
 
+  "use strict";
+
   var watchers = {};
   var watch = {}
 

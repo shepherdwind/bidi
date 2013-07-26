@@ -1,10 +1,13 @@
 KISSY.add(function(S, XTemplate){
 
+  "use strict";
+
   function add(watch){
 
     watch.add('linkage', {
 
       init: function(){
+
 
         var $control = this.$control;
 
@@ -36,6 +39,8 @@ KISSY.add(function(S, XTemplate){
         var linkage = $control('argv')[0];
 
         model.setLinkage(key, linkage);
+
+        this.$html = '<span class=xform id=' + $control('id') + '>';
 
       }
 

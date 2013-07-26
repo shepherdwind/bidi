@@ -1,5 +1,7 @@
 KISSY.add(function(S){
 
+  "use strict";
+
   return function(watch){
 
     watch.add('attr', function(){
