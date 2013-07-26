@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>demo lists</title>
+  <script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js" charset="utf-8"></script>
+</head>
+<body>
+
+<h2>demo标题</h2>
+
+<div class="bidi-viewer" data-view="user">
+
+  <h2>Your seat reservations (<span {{watch "text: seats.length"}}></span>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{watch "foreach: seats"}}
+      <tr>
+        <td><input value="{{name}}" /></td>
+        <td><select><option></option></select></td>
+        <td {{watch "text: formattedPrice"}}></td>
+        <td><a href="#nowhere" {{watch "click: removeSeat"}}>Remove</a></td>
+      </tr>
+      {{/watch}}
+    </tbody>
+  </table>
+
+  <button data-bind="click: addSeat, enable: seats().length < 5">Reserve another seat</button>
+
+  <h3 data-bind="visible: totalSurcharge() > 0">
+    Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
+  </h3>
+
+</div>
+
+<script>
+    var S = KISSY;
+    if (S.Config.debug) {
+      var srcPath = "../../../";
+      S.config({
+        packages:[
+          {
+            name: "gallery",
+            path: srcPath,
+            charset: "utf-8",
+            ignorePackageNameInUri: true
+          }
+        ]
+      });
+    }
+
+    S.use('gallery/bidi/1.0/index', function (S, Bidi) {
+
+      Bidi.xbind('user', {
+        firstName: 'Song',
+        lastName: 'Eward',
+        fullName: function(){
+          return this.get('firstName') + ' ' + this.get('lastName');
+        },
+        capitalizeLastName: function(){
+          var lastName = this.get('lastName').toUpperCase();
+          this.set('lastName', lastName);
+        }
+      });
+
+      Bidi.init();
+
+    })
+</script>
+
+</body>
+</html>
