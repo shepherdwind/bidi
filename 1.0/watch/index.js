@@ -5,6 +5,14 @@ KISSY.add(function(S){
   var watchers = {};
   var watch = {}
 
+  watch.noEscape = {};
+
+  var esc = S.escapeHTML;
+  //重写escapeHtml方法，增加白名单
+  S.escapeHTML = function(s){
+    return s in watch.noEscape ? s: esc(s);
+  };
+
   watch.add = function(name, watcher){
 
     if (name in watchers) {

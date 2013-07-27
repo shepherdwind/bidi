@@ -14,6 +14,15 @@ KISSY.add(function(S){
 
       },
 
+      beforeReady: function(){
+        var $control = this.$control;
+        var key = $control('key');
+        var model = $control('model');
+        var val = model.get(key);
+
+        this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
+      },
+
       _render: function(){
 
         var el = this.el;
@@ -24,7 +33,7 @@ KISSY.add(function(S){
         if (type == 'radio') {
           this._bindRadio();
         } else {
-          el.val(model.get(key));
+          //el.val(model.get(key));
           this._bindEvent();
         }
 

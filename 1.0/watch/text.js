@@ -32,6 +32,7 @@ KISSY.add(function(S){
         var model = $control('model');
 
         this.$html = ' id=' + $control('id') + '>' + model.get(key) + '<!----';
+        watch.noEscape[this.$html] = true;
 
       }
 

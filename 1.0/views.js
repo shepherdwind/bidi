@@ -25,12 +25,6 @@ KISSY.add(function(S, Event, XTemplate, Watch, Do){
       var json = this.model.toJSON();
       json['__name__'] = this.name;
 
-      var esc = S.escapeHTML;
-
-      S.escapeHTML = function(s){
-        return s;
-      };
-
       this.el.html(this.template.render(json));
 
       this.fire('inited');
