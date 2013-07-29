@@ -14,11 +14,19 @@ KISSY.add(function(S){
 
         var val = model.get(key);
         var el = $control('el');
-        var related = model.getRelated(key);
+        var expr = model.evaluation($control);
 
-        model.change(related, function(){
+        var argv = $control('argv');
+        var pipe = argv[0];
 
-          var val = model.get(key);
+        model.change(expr.related, function(){
+
+          var val = model.evaluation($control).val;
+
+          if (pipe && pipe in watch.pipe){
+            val = watch.pipe[pipe](val);
+          }
+
           el.html(val);
 
         }, this)
@@ -28,10 +36,16 @@ KISSY.add(function(S){
       beforeReady: function(){
 
         var $control = this.$control;
-        var key = $control('key');
         var model = $control('model');
+        var val = model.evaluation($control).val || '';
+        var argv = $control('argv');
+        var pipe = argv[0];
 
-        this.$html = ' id=' + $control('id') + '>' + model.get(key) + '<!----';
+        if (pipe && pipe in watch.pipe){
+          val = watch.pipe[pipe](val);
+        }
+
+        this.$html = ' id=' + $control('id') + '>' + val + '<!----';
         watch.noEscape[this.$html] = true;
 
       }
@@ -42,5 +56,4 @@ KISSY.add(function(S){
 
   return add;
 
-}, {
 });

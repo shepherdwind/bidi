@@ -41,16 +41,26 @@ KISSY.add(function(S, Event, XTemplate, Watch, Do){
       var selector = '#' + id;
       var argv = params.slice(2);
       var html = ' id=' + id + ' ';
+      var meta = params.meta;
 
       if (watcher) {
 
         var w = new watcher({
+          // watcher所对应的dom id选择器
           selector: selector,
+          // 如果是list下一个元素，parent记录了父元素相关信息
+          parent: meta,
+          // id选择器对应的id，没有符号"#"
           id: id,
+          // 绑定的数据对象键值
           key: key, 
+          // 数据对象，model
           model: this.model,
+          // view对应的NodeList
           base: this.el,
+          // XTemplate执行函数，只在block语法下需要，比如linkage、list
           fn: fn,
+          // 其他参数，{{watch "text: key: argv0: argv1}}
           argv: argv
         });
 

@@ -60,6 +60,8 @@ KISSY.add(function(S){
     return watchers[name];
   };
 
+  watch.pipe = {};
+
   S.each(arguments, function(fn, i){
     if (i) fn(watch);
   });

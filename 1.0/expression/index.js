@@ -10,9 +10,12 @@ KISSY.add(function(S, Parse){
 
   var cache = {};
 
-  function evaluation(str, model){
+  function evaluation($control){
 
     var ast, related;
+    var str = $control('key');
+    var model = $control('model');
+    var parent = $control('parent');
 
     /**
      * 对变量求值
@@ -22,10 +25,10 @@ KISSY.add(function(S, Parse){
       var key = variable.name;
 
       if (!variable.path.length) {
-        return model.get(key);
+        return model.get(key, parent);
       } else {
 
-        var base = model.item(key);
+        var base = model.item ? model.item(key): model.get(key, parent);
         if (!base) return base;
 
         S.some(variable.path, function(path){
@@ -38,16 +41,17 @@ KISSY.add(function(S, Parse){
 
     }
 
-    if (str in cache) {
+    var cacheKey = parent? parent.name + ':' + parent.id + str : str;
+    if (cacheKey in cache) {
 
-      ast = cache[str].ast;
-      related = cache[str].related;
+      ast = cache[cacheKey].ast;
+      related = cache[cacheKey].related;
 
     } else {
 
       ast = Parse.parse(str);
-      related = getRelated(ast);
-      cache[str] = { ast: ast, related: related };
+      related = getRelated(ast, model, parent);
+      cache[cacheKey] = { ast: ast, related: related };
 
     }
 
@@ -61,18 +65,20 @@ KISSY.add(function(S, Parse){
   /**
    * 获取相关的属性，比如 a.b > c，和[a, c]的变化有关
    */
-  function getRelated(ast){
+  function getRelated(ast, model, parent){
 
     var ret = [];
 
     if (!ast.operator) {
 
-      ast.name && ret.push(ast.name)
+      if (ast.name) {
+        ret = ret.concat(model.getRelated(ast.name, parent));
+      }
 
     } else {
 
-      if (ast.l) ret = ret.concat(getRelated(ast.l));
-      if (ast.r) ret = ret.concat(getRelated(ast.r));
+      if (ast.l) ret = ret.concat(getRelated(ast.l, model, parent));
+      if (ast.r) ret = ret.concat(getRelated(ast.r, model, parent));
 
     }
 

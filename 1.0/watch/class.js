@@ -11,12 +11,12 @@ KISSY.add(function(S){
       var key = $control('key');
       var classname = $control('argv')[0];
 
-      var expr = model.evaluation(key);
+      var expr = model.evaluation($control);
 
       model.change(expr.related, function(e){
 
         var el = $control('el');
-        var fn = model.evaluation(key).val ? 'addClass': 'removeClass';
+        var fn = model.evaluation($control).val ? 'addClass': 'removeClass';
         el[fn](classname);
 
       });

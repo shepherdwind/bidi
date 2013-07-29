@@ -23,7 +23,22 @@ KISSY.add(function(S, evaluation){
       return S.isFunction(val);
     },
 
-    get: function(key){ 
+    /**
+     * get方法，获取key值，默认情况下，直接从数据根节点获取数据，如果parent参数
+     * 不为空，则通过parent来查找变量
+     * @public
+     * @param {string} key 需要查找的变量的key
+     * @param {undefined|object} parent key的范围，默认为根节点
+     */
+    get: function(key, parent){ 
+
+      if (parent) {
+        return this._getByParent(key, parent);
+      }
+
+      if (this.__parent__ && key in this.__parent__) {
+        return this.__parent__[key];
+      }
 
       var val = this.attributes[key]; 
 
@@ -38,25 +53,74 @@ KISSY.add(function(S, evaluation){
       return val;
     },
 
-    getRelated: function(key){
+    /**
+     * 获取key来查找，parent对象定义了key所处的id和根节点name
+     * @private
+     */
+    _getByParent: function(key, parent){
+
+      var val = this._getParent(parent);
+      var ret = val[key];
+
+      if (S.isFunction(ret)){
+        this.__parent__ = val;
+        ret = ret.call(this);
+        delete this.__parent__;
+      }
+
+      if (this.__recode) {
+        this.__getter.push(parent.name + ':' + parent.id);
+      }
+
+      return ret;
+    },
+
+    /**
+     * @private
+     */
+    _getParent: function(parent){
+
+      // this.set('xxx', 'seat');
+      if (!parent.name || !parent.id) return parent;
+
+      var name = parent.name;
+      var o = this.get(name);
+      var ret = {};
+
+      S.some(o, function(val){
+
+        if (val['__parent__'].id === parent.id) {
+          ret = val;
+          return true;
+        }
+
+      }, this);
+
+      return ret;
+    },
+
+    getRelated: function(key, parent){
 
       if (this._isFunc(key)) {
 
         this.__recode = true;
         this.__getter = [];
-        this.get(key);
+        this.get(key, parent);
         this.__recode = false;
 
         return this.__getter.slice();
 
       } else {
 
-        return [key];
+        return parent ? [parent.name + ':' + parent.id] : [key];
 
       }
 
     },
 
+    /**
+     * return json object of attributes
+     */
     toJSON: function(){ 
 
       var json = {};
@@ -100,10 +164,22 @@ KISSY.add(function(S, evaluation){
 
     },
 
-    set: function(key, value){
+    /**
+     * 赋值方法，通过set，修改属性值，并且，触发事件
+     * @param {string} key 属性的key
+     * @param {object} value
+     * @param {object|undefined} parent 定义parent，在list中需要用到
+     * @public
+     * @return this
+     */
+    set: function(key, value, parent){
 
       // 临时禁止set方法，在toJSON方法调用的时候需要如此
       if (this.__forbidden_set) return;
+
+      if (parent) {
+        return this._setByParent(key, value, parent);
+      }
 
       if (key in this.attributes) {
 
@@ -124,11 +200,23 @@ KISSY.add(function(S, evaluation){
     },
 
     /**
+     * @private
+     */
+    _setByParent: function(key, value, parent){
+      var o = this._getParent(parent);
+      if (o && key in o) {
+        o[key] = value;
+      }
+      this.fire('change:' + parent.name + ':' + parent.id);
+      this.fire('change:' + parent.name);
+    },
+
+    /**
      * 对表达式求值
      * @return {object} { val: Boolen, related: Array }
      */
-    evaluation: function(expr){
-      return evaluation(expr, this);
+    evaluation: function($control){
+      return evaluation($control);
     }
 
   });

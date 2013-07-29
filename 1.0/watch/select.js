@@ -9,14 +9,14 @@ KISSY.add(function(S){
       var $control = this.$control;
       var model = $control('model');
       var key = $control('key');
-
-      var val = model.val(key);
       var el = $control('el');
+      var parent = $control('parent');
 
-      if (val) { el.val(val); }
+      //if (val) { el.val(val); }
 
       el.on('change', function(){
-        model.val(key, el.val());
+        //model.val(key, el.val());
+        model.set(key, this.selectedIndex, parent);
       });
 
     });
