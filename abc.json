@@ -1,12 +1,12 @@
 {
     "name": "bidi",
     "version": "1.0",
-    "desc": "请修改组件描述",
+    "desc": "mvvm for kissy(开发中)",
     "cover": "",
     "author": {
         "name": "hanwen.sah",
         "email": "hanwen.sah@taobao.com",
-        "page": "请修改作者个人首页"
+        "page": "http://shepehrdwind.com"
     },
     "type": "kissy-pie",
     "type-url": "http://abc.alibaba-inc.com/r/kissy-pie"
