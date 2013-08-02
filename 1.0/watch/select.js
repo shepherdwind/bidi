@@ -15,7 +15,8 @@ KISSY.add(function(S){
       //if (val) { el.val(val); }
 
       el.on('change', function(){
-        //model.val(key, el.val());
+        if (model.val)
+           return model.val(key, el.val());
         model.set(key, this.selectedIndex, parent);
       });
 
