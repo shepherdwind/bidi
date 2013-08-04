@@ -4,9 +4,6 @@
   <meta charset="utf-8"/>
   <title>demo lists</title>
   <script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js" charset="utf-8"></script>
-  <style type="text/css" media="screen">
-  .hide { display: none; }
-  </style>
 </head>
 <body>
 
@@ -36,16 +33,16 @@
             {{/each}}
         </select></td>
         <td {{watch "text: price: formattedPrice"}}></td>
-        <td><a href="#nowhere" {{watch "click1: removeSeat"}}>Remove</a></td>
+        <td><a href="#nowhere" {{watch "click: remove"}}>Remove</a></td>
       </tr>
       {{/watch}}
     </tbody>
   </table>
 
-  <button data-bind="click: addSeat, enable: seats().length < 5">Reserve another seat</button>
+  <button {{watch "click: addSeat"}}>Reserve another seat</button>
 
-  <h3 {{watch "class: !totalSurcharge: hide"}}>
-    Total surcharge: <span {{watch "text: totalSurcharge: formattedPrice"}}></span>
+  <h3 data-bind="visible: totalSurcharge() > 0">
+    Total surcharge: $<span {{watch "text: totalSurcharge"}}></span>
   </h3>
   </script>
 
@@ -54,7 +51,7 @@
 <script>
     var S = KISSY;
     if (S.Config.debug) {
-      var srcPath = "../";
+      var srcPath = "../../../";
       S.config({
         packages:[
           {
@@ -67,13 +64,8 @@
       });
     }
 
-    S.use('gallery/bidi/index', function (S, Bidi) {
+    S.use('gallery/bidi/1.0/index', function (S, Bidi) {
 
-      function getPrice(){
-        var meal = this.get('meal');
-        var m = this.get('meals')[meal];
-        return m.price;
-      }
 
       function formattedPrice(price){
         return price ? "$" + price.toFixed(2) : "None";        
@@ -81,10 +73,25 @@
 
       Bidi.pipe('formattedPrice', formattedPrice);
 
+      function Seat(name, meal){
+        this.name = name;
+        this.meal = meal;
+      }
+
+      Seat.prototype.price = function(seat){
+        var meal = this.get('meal', seat);
+        var m = this.get('meals')[meal];
+        return m.price;
+      };
+
+      Seat.prototype.remove = function(seat){
+        this.remove(seat);
+      };
+
       Bidi.xbind('list', {
         seats: [
-          {name: "Steve", meal: 0, price: getPrice},
-          {name: "Hanwen", meal: 1, price: getPrice}
+          new Seat('Steve', 0),
+          new Seat('Hanwen', 1)
         ],
         meals: [
           { mealName: "Standard (sandwich)", price: 0 },
@@ -101,6 +108,10 @@
           }, this);
 
           return price;
+        },
+        addSeat: function(){
+          var seat = new Seat('Haha', 2);
+          this.add(seat, 'seats');
         }
       });
 
