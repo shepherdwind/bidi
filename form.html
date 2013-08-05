@@ -93,7 +93,7 @@
 <script>
     var S = KISSY;
     if (S.Config.debug) {
-      var srcPath = "../../../";
+      var srcPath = "../";
       S.config({
         packages:[
           {
@@ -106,7 +106,7 @@
       });
     }
 
-    S.use('gallery/bidi/1.0/index', function (S, Bidi) {
+    S.use('gallery/bidi/index', function (S, Bidi) {
 
       var form = Bidi.xform('form', {
 
