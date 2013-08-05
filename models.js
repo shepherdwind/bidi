@@ -5,6 +5,7 @@ KISSY.add(function(S, evaluation){
   function Model(obj){
 
     this.attributes = {};
+    this.linkages = {};
 
     S.each(obj, function(val, key){
       this.attributes[key] = val.slice ? val.slice(): val;
@@ -36,7 +37,7 @@ KISSY.add(function(S, evaluation){
         return this._getByParent(key, parent);
       }
 
-      var val = this.attributes[key]; 
+      var val = this._getAttr(key);
 
       if (typeof val == 'function') {
         val = val.call(this);
@@ -49,6 +50,65 @@ KISSY.add(function(S, evaluation){
       return val;
     },
 
+    _getAttr: function(key){
+
+      var paths = key.split('.');
+      var ret = this.attributes;
+
+      //$aa.$item.attr
+      if (paths.length > 2 && paths[1] === '$item') {
+        ret = this.item(paths[0]);
+        paths = paths.slice(2);
+
+        if(!ret) return ret;
+      }
+
+      S.each(paths, function(path){
+        ret = ret[path];
+        if (ret === undefined) return false;
+      });
+
+      if (key in this.linkages) {
+
+        var link = this.linkages[key];
+        var filter = this.item(link);
+        var last = paths[0];
+
+        if (filter && filter[last]) {
+          filter = filter[last];
+          ret = S.filter(ret, function(item){
+            return S.indexOf(item.value, filter) > -1;
+          });
+        } else {
+          return undefined;
+        }
+      }
+
+      return ret;
+    },
+
+    /**
+     * 获取某个表单所对应的对象，通常，如果是一个select或者radio，一个select对应
+     * 的$values有多个，item根据select的$defaultValue所对应的对象
+     */
+    item: function(key){
+
+      var items = this.get(key).values;
+      var val = this.get(key).defaultValue;
+      var ret;
+
+      if (!items) return ret;
+
+      S.some(items, function(item){
+        if (item.value == val) {
+          ret = item;
+          return true;
+        }
+      });
+
+      return ret;
+
+    },
     /**
      * 获取key来查找，parent对象定义了key所处的id和根节点name
      * @private
@@ -176,20 +236,25 @@ KISSY.add(function(S, evaluation){
         return this._setByParent(key, value, parent);
       }
 
-      if (key in this.attributes) {
+      var paths = key.split('.');
+      var attr = this.attributes;
+      var len = paths.length;
 
-        var old = this.attributes[key];
-        this.attributes[key] = value;
+      S.each(paths, function(path, i){
 
-        this.fire('change:' + key, {name: key, old: old, value: value});
+        if (path in attr && i < len - 1) {
+          attr = attr[path];
+        } else {
+          return false;
+        }
 
-      } else {
+      });
 
-        this.attributes[key] = value;
-        this.fire('add:' + key, {name: key, value: value});
+      var last = paths[len - 1];
 
-      }
+      attr[last] = value;
 
+      this.fire('change:' + paths[0], {path: paths.slice(1)});
       return this;
 
     },
@@ -259,6 +324,11 @@ KISSY.add(function(S, evaluation){
      */
     evaluation: function($control){
       return evaluation($control);
+    },
+
+    setLinkage: function(key, val){
+      this.linkages[key] = val;
+      return this;
     }
 
   });

@@ -4,4 +4,4 @@ publish:
 	rm -rf *.htmlg
 	git add .
 	git commit -m 'sync code auto'
-	git push
+	git push origin gh-pages:gh-pages
