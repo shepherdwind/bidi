@@ -3,7 +3,7 @@
  * @author hanwen.sah<hanwen.sah@taobao.com>
  * @module bidi
  **/
-KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
+KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher){
 
   "use strict";
 
@@ -150,12 +150,9 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
       return watch(scopes, option);
     }
 
-    XTemplate.addCommand(name, fn);
-    commands[name] = true;
+    commands[name] = fn;
 
   }
-
-  XTemplate.addCommand('watch', watch);
 
   var Bidi = {
 
@@ -180,19 +177,26 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
     },
 
     xbind: function(name, obj){
-      Views[name] = new View(name, new Model(obj));
-    },
 
-    xform: function(name, obj){
-      Views[name] = new View(name, new Form(obj));
-      return Views[name];
+      Views[name] = new View(name, new Model(obj));
+      return View[name];
+
     },
 
     init: function(){
 
       $(".bidi-viewer").each(function(el){
+
         var name = el.attr('data-view');
-        Views[name].setEl(el).render();
+        var view = Views[name].setEl(el);
+
+        //添加命令
+        view.template.addCommand('watch', watch);
+        S.each(commands, function(fn, cmd){
+          view.tempalte.addCommand(cmd, fn);
+        });
+
+        view.render();
       });
 
     },
@@ -217,7 +221,6 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, Form, View, Watcher){
     'base',
     'xtemplate',
     './models',
-    './form',
     './views',
     './watch/index'
   ]
