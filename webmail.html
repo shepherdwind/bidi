@@ -7,6 +7,7 @@
   <script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js" charset="utf-8"></script>
   <style type="text/css">
   .hide { display: none; }
+  .selected { font-weight: bold; color: blue; }
   </style>
 </head>
 <body>
@@ -15,30 +16,29 @@
 
 <div class="bidi-viewer" data-view="webmail">
 
+  <script type="text/xtemplate">
   <!-- Folders -->
-  <ul class="folders">
-    {{watch "list: folders"}}
-    <li {{"class: isSelted: selected" "click: goFold"}}>{{this}}</li>
+  <ul class="folders" {{#watch "list: folders"}}>
+    <li {{watch "class: isSeleted: selected" "click: goFold"}}>{{text}}</li>
     {{/watch}}
   </ul>
 
   <!-- Mails grid -->
   <table class="mails" {{watch "class: mails.length: hide"}}>
     <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
-    <tbody>
-    {{#watch "list: mails"}}
-    <tr {{watch "click: goToMail"}}>
-      <td>{{from}}</td>
-      <td>{{to}}</td>
-      <td>{{subject}}</td>
-      <td>{{date}}</td>
-    </tr>     
+    <tbody {{#watch "list: mails"}}>
+      <tr {{watch "click: goToMail"}}>
+        <td>{{from}}</td>
+        <td>{{to}}</td>
+        <td>{{subject}}</td>
+        <td>{{date}}</td>
+      </tr>
     {{/watch}}
     </tbody>
   </table>
 
   <!-- Chosen mail -->
-  <div class="viewMail" {{watch "class: !choosedMail.length: hide"}}>
+  <div class="viewMail" {{watch "class: !choosedMail: hide"}}>
     {{#watch "with: choosedMail"}}
     <div class="mailInfo">
       <h1>{{subject}}</h1>
@@ -49,6 +49,8 @@
     <p class="message">{{messageContent}}</p>
     {{/watch}}
   </div>
+  </script>
+
 </div>
 
 <script>
@@ -76,16 +78,27 @@
       S.augment(Folder, {
 
         goFold: function(folder){
-          console.log(folder);
+          var text = this.get('text' ,folder);
+          this.set('folder', text);
         },
 
-        isSelted: function(){
-          console.log(folder);
+        isSeleted: function(folder){
+          var text = this.get('text' ,folder);
+          return text == this.get('folder');
         }
 
       });
 
-      Bidi.xbind('list', {
+      Bidi.xbind('webmail', {
+        folders: [
+          new Folder('Index'),
+          new Folder('Archive'),
+          new Folder('Sent'),
+          new Folder('Spam')
+        ],
+        mails: [],
+        choosedMail: false,
+        folder: 'Index'
       });
 
       Bidi.init();

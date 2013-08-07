@@ -121,18 +121,10 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher){
           xcount: xcount,
           xindex: xindex
         };
-        buf += option.fn(opScopes);
+        buf += option.fn(opScopes).replace(/^>/, '');
       }
 
-      //找到tag是什么,list会生成一个相同tag的dom
-      var tag = /\s*<(\w+)[\s>]/.exec(buf);
-      if (tag){
-        html = html.replace(/{tag}/g, tag[1]);
-      } else {
-        S.error('str no support tag regexper' + tag);
-      }
-
-      return html + buf;
+      return ' >>><<<' + html + '>' + buf;
 
     }
 
