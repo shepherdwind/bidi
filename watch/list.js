@@ -37,6 +37,39 @@ KISSY.add(function(S, XTemplate){
 
         });
 
+        this._bindChange();
+      },
+
+      _bindChange: function(){
+
+        var $control = this.$control;
+        var model = $control('model');
+        var key = $control('key');
+
+        model.change(key, function(e){
+
+          if (e.$item) return;
+
+          var fn = $control('fn');
+          var option = {params: [e.val], fn: fn};
+
+          var json = model.toJSON();
+          json['__name__'] = $control('name');
+
+          var html = new XTemplate(fn);
+          html = html.runtime.option.commands.each([e.val, json], option);
+
+          $control('el').html(html);
+          $control('view').fire('inited');
+
+        });
+
+      },
+
+      beforeReady: function(){
+        var $control = this.$control();
+        var model = $control.model;
+        model.setLists($control.key);
       }
 
     });

@@ -97,6 +97,23 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher){
 
     },
 
+    render: function(scopes, option, params, name, html){
+
+      var model = Views[name].model;
+      var len = scopes.length - 1;
+
+      option.params[0] = scopes[0][params[1]];
+
+      var param0 = option.params[0];
+      var opScopes = [param0, scopes];
+
+      var buf = option.fn(opScopes).replace(/^>/, '');
+
+      return ' >>><<<' + html + '>' + buf;
+
+
+    },
+
     list: function(scopes, option, params, name, html){
 
       var model = Views[name].model;
@@ -127,7 +144,23 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher){
 
       return ' >>><<<' + html + '>' + buf;
 
-    }
+    },
+
+    with: function(scopes, option, params, name, html){
+
+      var model = Views[name].model;
+      var len = scopes.length - 1;
+
+      option.params[0] = scopes[0][params[1]];
+
+      var param0 = option.params[0];
+      var opScopes = [param0].concat(scopes);
+
+      var buf = option.fn(opScopes).replace(/^>/, '');
+
+      return ' >>><<<' + html + '>' + buf;
+
+    },
 
   };
 
@@ -169,10 +202,10 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher){
 
     },
 
-    xbind: function(name, obj){
+    xbind: function(name, obj, augment){
 
-      Views[name] = new View(name, new Model(obj));
-      return View[name];
+      Views[name] = new View(name, new Model(obj, augment));
+      return Views[name];
 
     },
 
