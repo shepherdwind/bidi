@@ -1,0 +1,14 @@
+language: node_js
+
+notifications:
+  email:
+    - eward.song@gmail.com
+
+node_js:
+  - 0.10
+
+install:
+  - npm install mocha-phantomjs phantomjs
+
+script:
+  - mocha-phantomjs 1.0/spec/index.html
