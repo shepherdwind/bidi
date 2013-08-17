@@ -2,7 +2,7 @@
   "name": "bidi",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha-phantomjs 1.0/spec/index.html"
+    "test": "mocha-phantomjs 1.0/spec/index.html -t 40000 -R dot"
   },
   "repository": {
     "type": "git",
