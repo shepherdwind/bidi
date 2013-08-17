@@ -9,6 +9,7 @@ node_js:
 
 install:
   - npm install mocha-phantomjs phantomjs
+  - npm install mocha
 
 script:
-  - mocha-phantomjs 1.0/spec/index.html
+  - npm test
