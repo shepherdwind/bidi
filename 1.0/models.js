@@ -75,6 +75,27 @@ KISSY.add(function(S, evaluation){
       return val;
     },
 
+    /**
+     * 和this.get一样，只是call用于处理函数，并且可以自定义其他参数和函数执行上下文
+     * @param {string} key 支持字符串和点操作，函数获取路径
+     * @param {array} args 其他参数
+     * @param {object|undefined} context 函数执行上下文
+     * @param {object} parent
+     * @return this
+     */
+    call: function(key, args, context, parent){
+
+      var fn = this._getAttr(key);
+      if (!S.isFunction(fn)) return this;
+
+      args = S.isArray(args) ? args : [args];
+      context = context || this;
+
+      fn.apply(context, args);
+
+      return this;
+    },
+
     _getAttr: function(key, base){
 
       var paths = key.split('.');

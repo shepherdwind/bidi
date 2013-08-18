@@ -4,17 +4,19 @@ KISSY.add(function(S){
 
   return function(watch){
 
-    watch.add('click', function(){
+    watch.add('action', function(){
 
       var $control = this.$control;
       var model = $control('model');
-      var key = $control('key');
+      var evt = $control('key');
       var selector = $control('selector');
+      var argv = $control('argv');
+      var fn = argv[0];
 
-      $control('base').delegate('click', selector, function(){
-        model.get(key, $control('parent'));
+      S.Event.on(evt, function(e){
+        var parent = $control('parent');
+        model.call(fn, e);
       });
-
     });
 
   }

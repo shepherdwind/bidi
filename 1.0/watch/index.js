@@ -79,6 +79,7 @@ KISSY.add(function(S){
     './radio',
     './list',
     './render',
+    './action',
     './value'
   ]
 });

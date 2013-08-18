@@ -25,6 +25,10 @@
         { text: 'hello' },
         { text: 'hehe', isCompleted: true }
       ]
+    }, {
+      addTodo: function(e){
+        console.log(e);
+      }
     });
 
     Bidi.init();
