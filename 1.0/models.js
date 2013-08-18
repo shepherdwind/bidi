@@ -141,17 +141,23 @@ KISSY.add(function(S, evaluation){
     _getByParent: function(key, parent){
 
       var ret;
+      var root = false;
       if (key && key.indexOf('$root.') === 0) {
         ret = this._getAttr(key.slice(6));
+        root = true;
       } else {
         var val = this._getParent(parent);
         ret = key !== null? this._getAttr(key, val): val;
       }
 
       if (S.isFunction(ret)){
-        //如果在list中，函数第一个参数是，list所在的对象
-        val.parent = this;
-        ret = ret.call(val, parent);
+        if (!root) {
+          //如果在list中，函数第一个参数是，list所在的对象
+          val.parent = this;
+          ret = ret.call(val, parent);
+        } else {
+          ret = ret.call(this, parent);
+        }
       }
 
       if (this.__recode) {

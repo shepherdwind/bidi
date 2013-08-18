@@ -34,7 +34,7 @@ KISSY.add(function(S, Event, XTemplate, Watch){
       return this;
     },
 
-    watch: function(params, fn){
+    watch: function(params, fn, scopes){
 
       var who = params[0];
       var key = params[1];
@@ -62,6 +62,8 @@ KISSY.add(function(S, Event, XTemplate, Watch){
           base: this.el,
           // XTemplate执行函数，只在block语法下需要，比如linkage、list
           fn: fn,
+          // XTemplate执行时上下文，再次渲染模板，需要保持上下文环境
+          scopes: scopes,
           // 其他参数，{{watch "text: key: argv0: argv1}}
           argv: argv,
           name: this.name,

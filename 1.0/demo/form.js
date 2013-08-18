@@ -17,6 +17,7 @@ KISSY.add(function(S, Bidi){
 
     reasons: {
       defaultValue: null,
+      name: "reasons",
       values: [
         {value: 11, text: '尺寸、尺码不符', jude: true, title: "desc", subs: [11, 12]},
         {value: 12, text: '拼接、走线不齐'},

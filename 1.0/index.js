@@ -50,7 +50,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
         if (!id) {
 
-          var o = Views[name].watch(params, option.fn);
+          var o = Views[name].watch(params, option.fn, scopes);
           id = o.id;
           var fn = params[0];
 

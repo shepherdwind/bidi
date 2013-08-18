@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mocha</title>
+    <title>Mocha Test for Bidi</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="mocha.css" />
@@ -50,17 +50,19 @@
           </div>
         </div>
 
+        {{#reasons}}
         <div class="form-group reasons" {{watch "class: !reasons.values: hide"}}>
           <label class="col-lg-2 control-label">问题描述:</label>
           <div class="col-lg-10">
             {{#watch "linkage: reasons.values: problem" "radio: reasons.defaultValue"}}
             <label class="radio-inline">
-              <input type="radio" name="name1" value="{{value}}"/>
+              <input type="radio" name="{{../name}}" value="{{value}}"/>
               {{text}}
             </label>
             {{/watch}}
           </div>
         </div>
+        {{/reasons}}
 
         <div class="form-group hide" {{watch "class: !subs.values: hide"}}>
           <label class="col-lg-2 control-label">问题描述第三级:</label>
@@ -180,6 +182,55 @@
         <h3 {{watch "class: totalSurcharge <= 0: hide"}}>
           Total surcharge: <span {{watch "text: totalSurcharge: formattedPrice"}}></span>
         </h3>
+        </script>
+
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="bidi-viewer panel panel-primary" data-view="webmail">
+
+        <script type="text/xtemplate">
+        <div class="panel-heading">示例4：web app</div>
+        <!-- Folders -->
+        <ul class="nav nav-tabs">
+          {{#watch "list: folders"}}
+          <li {{watch "class: isSeleted: active" "click: goFold"}}>
+            <a href="#nowhere">{{text}}</a>
+          </li>
+          {{/watch}}
+        </ul>
+
+        <!-- Mails grid -->
+        <table class="mails table table-bordered table-hover" {{watch "class: !mails.length: hide"}}>
+          <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
+          <tbody>
+            {{#watch "list: mails"}}
+            <tr {{watch "click: $root.goToMail"}}>
+              <td>{{from}}</td>
+              <td>{{to}}</td>
+              <td>{{subject}}</td>
+              <td>{{date}}</td>
+            </tr>
+          {{/watch}}
+          </tbody>
+        </table>
+
+        <!-- Chosen mail -->
+        <div class="viewMail" {{watch "class: !choosedMail: hide"}}>
+          <div class="mail">
+            {{#watch "render: choosedMail"}}
+            <div class="mailInfo">
+              <h1>{{subject}}</h1>
+              <p><label>From</label>: <span>{{from}}</span></p>
+              <p><label>To</label>: <span>{{to}}</span>/</p>
+              <p><label>Date</label>: <span>{{date}}</span></p>
+            </div>
+            <p class="message">{{{messageContent}}}</p>
+            {{/watch}}
+          </div>
+        </div>
         </script>
 
       </div>
