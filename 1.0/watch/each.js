@@ -22,7 +22,9 @@ KISSY.add(function(S, XTemplate){
 
           var html = new XTemplate(fn);
           var option = {params: [model.get(key)], fn: fn};
-          html = html.runtime.option.commands.each([model.get(key)], option);
+          var scopesNew = $control('scopes').slice();
+          scopesNew.unshift(model.get(key));
+          html = html.runtime.option.commands.each(scopesNew, option);
           el.html(html);
 
           var paths = key.split('.');

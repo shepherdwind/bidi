@@ -10,6 +10,7 @@ KISSY.add(function(){
   requires: [
     './runner/simple',
     './runner/form',
-    './runner/lists'
+    './runner/lists',
+    './runner/webmail'
   ]
 });

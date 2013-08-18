@@ -1,21 +1,19 @@
 
 KISSY.add(function(S, Bidi){
 
-  function Folder(text){
-    this.text = text;
-  }
+  function Folder(text){ this.text = text; }
 
   S.augment(Folder, {
 
     goFold: function(folder){
-      var text = this.get('text' ,folder);
-      this.set('folder', text);
+      var text = this.text;
+      this.parent.set('folder', text);
       showMails(text);
     },
 
     isSeleted: function(folder){
-      var text = this.get('text' ,folder);
-      return text == this.get('folder');
+      var text = this.text;
+      return text == this.parent.get('folder');
     }
 
   });
@@ -33,8 +31,10 @@ KISSY.add(function(S, Bidi){
   }, {
     goToMail: function(mail){
       var mail = this.get(null, mail)
+      var _mail = mail;
       S.io.get('./webmail/mail.html?id=' + mail.id).then(function(argv){
         var mail = eval('(' + argv[0] + ')')
+        S.mix(mail, _mail, true)
         model.set('choosedMail', mail)
         model.set('mails', [])
       });
@@ -42,8 +42,6 @@ KISSY.add(function(S, Bidi){
   }); 
 
   var model = view.model;
-
-  Bidi.init();
 
   showMails('Index');
 
@@ -55,6 +53,9 @@ KISSY.add(function(S, Bidi){
     });
   }
 
+  return view;
+
+
 }, {
-  requires: ['../index']
+  requires: ['../index', 'ajax']
 })
