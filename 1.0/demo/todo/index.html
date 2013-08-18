@@ -12,7 +12,7 @@
       <script type="text/xtempalte">
 			<header id="header">
 				<h1>todos</h1>
-        <input id="new-todo" placeholder="What needs to be done?" autofocus {{action "keypress: addTodo"}}>
+        <input class="new-todo" placeholder="What needs to be done?" autofocus {{action "keypress: addTodo"}}>
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section id="main">
@@ -20,13 +20,13 @@
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
           {{#watch 'list: todos'}}
-          <li {{class "isCompleted: completed"}}>
-						<div class="view">
+          <li {{watch "class: isCompleted: completed" "class: isEdit: editing"}}>
+            <div class="view" {{watch "class: isEdit: hidden" "action: dblclick: edit"}}>
               <input class="toggle" type="checkbox" {{attr "isCompleted: checked"}}>
               <label {{text "text"}}></label>
-              <button class="destroy" {{action "click: remove"}}></button>
+              <button class="destroy" {{click "$root.remove"}}></button>
 						</div>
-            <input class="edit" {{value "text"}}>
+            <input class="edit" {{watch "value: text" "action: keypress: edit" "action: blur: edit"}}>
 					</li>
           {{/watch}}
 				</ul>

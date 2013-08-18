@@ -18,7 +18,7 @@ KISSY.add(function(S){
         var $control = this.$control;
         var key = $control('key');
         var model = $control('model');
-        var val = model.get(key);
+        var val = model.evaluation($control).val || '""';
 
         this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
       },
@@ -69,16 +69,20 @@ KISSY.add(function(S){
         var el = this.el;
         var model = this.model;
         var key = this.key;
+        var $control = this.$control;
+        var expr = model.evaluation($control);
+        var parent = this.parent;
 
-        el.on('keyup', function(){
+        el.on('keyup change', function(){
 
           var val = el.val();
-          model.set(key, val);
+          model.set(key, val, parent);
 
         });
 
-        model.change(key, function(){
-          el.val(model.get(key));
+        model.change(expr.related, function(){
+          var val = model.evaluation($control).val || '';
+          el.val(val);
         });
 
       }

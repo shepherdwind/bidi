@@ -91,6 +91,10 @@ KISSY.add(function(S, evaluation){
       args = S.isArray(args) ? args : [args];
       context = context || this;
 
+      if (parent) {
+        args.push(this.get(null, parent));
+      }
+
       fn.apply(context, args);
 
       return this;
@@ -387,9 +391,7 @@ KISSY.add(function(S, evaluation){
     _setByParent: function(key, value, parent){
 
       var o = this._getParent(parent);
-      if (o && key in o) {
-        o[key] = value;
-      }
+      if (o) o[key] = value;
 
       var _p = parent.__parent__ || parent;
       this.fire('change:' + _p.name, { $item: _p.id });

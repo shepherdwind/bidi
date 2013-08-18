@@ -13,9 +13,9 @@ KISSY.add(function(S){
       var argv = $control('argv');
       var fn = argv[0];
 
-      S.Event.on(evt, function(e){
+      $control('el').on(evt, function(e){
         var parent = $control('parent');
-        model.call(fn, e);
+        model.call(fn, e, null, parent);
       });
     });
 

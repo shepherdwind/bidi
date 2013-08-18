@@ -17,6 +17,14 @@ KISSY.add(function(S){
         attr(model.evaluation($control).val);
       });
 
+      var el = $control('el');
+
+      el.on('change', function(){
+        var attrname = $control('argv')[0];
+        var val = el.attr(attrname);
+        model.set(key, val, $control('parent'))
+      });
+
       function attr(val){
         var el = $control('el');
         var attrname = $control('argv')[0];

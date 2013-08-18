@@ -147,9 +147,7 @@ KISSY.add(function(){
       expect(feedback.hasClass('hide')).to.be(true)
 
       //选中已寄回商品，需要显示label-warning提示，退货信息和退货反馈
-      radio.fire('click')
-      //第一次click代理事件没法捕获，不知道为啥
-      radio.fire('click')
+      radio[0].click()
       expect(warning.hasClass('hide')).to.be(false)
       expect(logistics.hasClass('hide')).to.be(false)
       expect(feedback.hasClass('hide')).to.be(false)
