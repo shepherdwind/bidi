@@ -15,4 +15,4 @@ MVVM for KISSY, 开发中，暂时不推荐使用
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/AAEZP/1/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<iframe width="100%" height="500" src="http://jsfiddle.net/AAEZP/2/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="http://jsfiddle.net/AAEZP/3/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
