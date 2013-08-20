@@ -11,3 +11,4 @@ MVVM for KISSY, 开发中，暂时不推荐使用
 
 ## 组件快速使用
 
+<iframe width="100%" height="300" src="http://jsfiddle.net/AAEZP/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
