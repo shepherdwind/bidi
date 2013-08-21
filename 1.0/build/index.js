@@ -1459,9 +1459,6 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
         var linkage = $control('argv')[0];
 
         model.setLinkage(key, linkage);
-
-        this.$html = '<span class=xform id=' + $control('id') + '>';
-
       }
 
     });
@@ -2083,7 +2080,6 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
     linkage: function(scopes, option, params, name, html){
 
-      html = html || '';
       var model = Views[name].model;
 
       //重新计算，这时候model的value会有改变
@@ -2091,13 +2087,11 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       //调用XTemplate的each命令
       option.params[0] = scopes[0]['$$linkage'];
-      html += option.commands.each(scopes, option);
+      var buf = option.commands.each(scopes, option);
 
       delete scopes['$$linkage'];
 
-      html += '</span>';
-
-      return html;
+      return ' >>><<<' + html + '>' + buf;
 
     },
 

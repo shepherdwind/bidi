@@ -43,9 +43,6 @@ KISSY.add(function(S, XTemplate){
         var linkage = $control('argv')[0];
 
         model.setLinkage(key, linkage);
-
-        this.$html = '<span class=xform id=' + $control('id') + '>';
-
       }
 
     });

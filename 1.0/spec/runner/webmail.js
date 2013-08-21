@@ -55,12 +55,11 @@ KISSY.add(function(){
         mailEl = webmail.el.all('.viewMail')
         table = webmail.el.all('table')
 
-        console.log(table.hasClass('hide'))
         expect(mailEl.hasClass('hide')).to.be(false)
         expect(mailEl.all('span').text()).to.be(from)
         expect(table.hasClass('hide')).to.be(true)
         done()
-      }, 20)
+      }, 100)
     })
 
   })

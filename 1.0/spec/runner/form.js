@@ -77,7 +77,7 @@ KISSY.add(function(){
       var form = window.Bidi.form
       var model = form.model
       var select = form.el.all('.form-group').item(0).all('select')
-      var radioBox = form.el.all('.form-group').item(1).all('.xform')
+      var radioBox = form.el.all('.form-group').item(1).all('.col-lg-10')
       var reasons = model.get('problem.$item.reasons')
       var value = model.get('problem.$item.value')
 
@@ -113,7 +113,7 @@ KISSY.add(function(){
       var form = window.Bidi.form
       var model = form.model
       var select = form.el.all('.form-group').item(0).all('select')
-      var radioBox = form.el.all('.form-group').item(1).all('.xform')
+      var radioBox = form.el.all('.form-group').item(1).all('.col-lg-10')
       var subEl = form.el.all('.form-group').item(2)
 
       select.val(1)
