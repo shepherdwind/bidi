@@ -15,6 +15,7 @@ KISSY.add(function(S){
 
       model.change(expr.related, function(){
         attr(model.evaluation($control).val);
+        model.fire( 'render:attr', {key: key, el: $control('el')} )
       });
 
       var el = $control('el');
