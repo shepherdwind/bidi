@@ -108,7 +108,12 @@ KISSY.add(function(S, Parse){
           break;
 
         case 'not':
-          return !expr(ast.l, val);
+          var ret = expr(ast.l, val);
+          if (S.isArray(ret)) {
+            return ret.length === 0;
+          } else {
+            return !ret;
+          }
           break;
 
         case '==':

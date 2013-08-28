@@ -768,7 +768,12 @@ KISSY.add('gallery/bidi/1.0/expression/index',function(S, Parse){
           break;
 
         case 'not':
-          return !expr(ast.l, val);
+          var ret = expr(ast.l, val);
+          if (S.isArray(ret)) {
+            return ret.length === 0;
+          } else {
+            return !ret;
+          }
           break;
 
         case '==':
