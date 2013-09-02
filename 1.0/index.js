@@ -217,11 +217,15 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
     },
 
-    init: function(){
+    init: function(grep){
 
       $(".bidi-viewer").each(function(el){
 
         var name = el.attr('data-view');
+
+        //grep过滤
+        if (grep && name.indexOf(grep) < 0) return;
+
         var view = Views[name].setEl(el);
 
         //添加命令
@@ -244,7 +248,9 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
     // add pipe function
     pipe: function(name, fn){
       Watcher.pipe[name] = fn;
-    }
+    },
+
+    registerHelper: this.pipe
 
   };
 

@@ -1,4 +1,4 @@
-KISSY.add(function(S, Bidi, simple, form, lists, webmail){
+KISSY.add(function(S, Bidi, simple, form, lists, webmail, Uri){
 
   window.Bidi = {};
   window.Bidi.simple = simple;
@@ -6,9 +6,40 @@ KISSY.add(function(S, Bidi, simple, form, lists, webmail){
   window.Bidi.lists = lists;
   window.Bidi.webmail = webmail;
 
-  Bidi.init();
+  var uri = new Uri(location.href);
+  var query = uri.getQuery()
+  var g = query.get('grep')
+  var grep;
 
-  S.use('gallery/bidi/1.0/spec/runner');
+  if (g && g.indexOf) {
+    if (g.indexOf('Simple') === 0) {
+      grep = 'user'
+    } else if (g.indexOf('Form') === 0) {
+      grep = 'form'
+    } else if (g.indexOf('List') === 0) {
+      grep = 'list'
+    } else if (g.indexOf('Web mail') === 0) {
+      grep = 'webmail'
+    }
+  }
+
+  Bidi.init(grep);
+
+  if (!query.has('noSpec')) {
+    S.use('gallery/bidi/1.0/spec/runner');
+  }
+
+  S.all('.nav-tabs').all('a').each(function(el){
+    var href = el.attr('href')
+    var _query = new Uri(href).query
+    if (query.get('grep') === _query.get('grep') && 
+       query.has('grep') === _query.has('grep') &&  
+         query.get('noSpec') === _query.get('noSpec') && 
+           query.has('noSpec') === _query.has('noSpec') 
+       ){
+      el.parent('li').addClass('active');
+    }
+  });
 
 }, {
   requires: [
@@ -16,6 +47,7 @@ KISSY.add(function(S, Bidi, simple, form, lists, webmail){
     '../demo/simple',
     '../demo/form',
     '../demo/lists',
-    '../demo/webmail'
+    '../demo/webmail',
+    'uri'
   ]
 })

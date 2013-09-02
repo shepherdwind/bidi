@@ -1,7 +1,7 @@
 
 KISSY.add(function(){
 
-  describe('From', function(){
+  describe('Form', function(){
 
     it('select value should equal to defaultValue in model', function(){
       var form = window.Bidi.form

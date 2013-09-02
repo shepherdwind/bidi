@@ -19,7 +19,7 @@ KISSY.add(function(){
       expect(tbody.all('tr').length).to.be(len)
 
       //add an seat
-      model.get('addSeat')
+      model.call('addSeat')
       expect(tbody.all('tr').length).to.be(len + 1)
       expect( +seat.text() ).to.be(len + 1)
 
@@ -53,7 +53,7 @@ KISSY.add(function(){
 
       model.set('meal', 2, seat)
       expect( +$item.all('select').val() ).to.be(2)
-      var price = seat.price(seat)
+      var price = model.call('price', seat)
       expect( $item.all('.price').text() ).to.be( '$' + price.toFixed(2) )
 
       model.set('meal', 0, seat)
