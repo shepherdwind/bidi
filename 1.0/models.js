@@ -95,9 +95,8 @@ KISSY.add(function(S, evaluation){
         args.push(this.get(null, parent));
       }
 
-      fn.apply(context, args);
+      return fn.apply(context, args);
 
-      return this;
     },
 
     _getAttr: function(key, base){
@@ -189,7 +188,7 @@ KISSY.add(function(S, evaluation){
           val.parent = this;
           ret = ret.call(val, parent);
         } else {
-          ret = ret.call(this, parent);
+          ret = ret.call(this, this.get(null, parent));
         }
       }
 

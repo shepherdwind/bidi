@@ -6,26 +6,10 @@ KISSY.add(function(S, Bidi){
 
   Bidi.pipe('formattedPrice', formattedPrice);
 
-  function Seat(name, meal){
-    this.name = name;
-    this.meal = meal;
-  }
-
-  Seat.prototype.price = function(){
-    var parent = this.parent;
-    var meal = this.meal;
-    var m = parent.get('meals')[meal];
-    return m.price;
-  };
-
-  Seat.prototype.remove = function(){
-    this.parent.remove(this);
-  };
-
   var lists = Bidi.xbind('list', {
     seats: [
-      new Seat('Steve', 0),
-      new Seat('Hanwen', 1)
+      { name: 'Steve', meal: 0 },
+      { name: 'Hanwen', meal: 1 }
     ],
     meals: [
       { mealName: "Standard (sandwich)", price: 0, value: 0 },
@@ -33,20 +17,31 @@ KISSY.add(function(S, Bidi){
       { mealName: "Ultimate (whole zebra)", price: 290, value: 2 }
     ]
   }, {
+
+    price: function(seat){
+      var meal = seat.meal;
+      var meals = this.get('meals');
+      return meals[meal].price;
+    },
+
+    remove: function(seat){
+      this.remove(seat);
+    },
+
     totalSurcharge: function(){
 
       var seats = this.get('seats');
       var price = 0;
 
       S.each(seats, function(seat){
-        price += this.get('price', seat);
+        price += this.call('price', seat);
       }, this);
 
       return price;
     },
+
     addSeat: function(){
-      var seat = new Seat('Haha', 2);
-      this.add(seat, 'seats');
+      this.add( { name: "Eward", meal: 1 }, 'seats');
     }
   });
 
