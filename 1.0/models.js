@@ -129,7 +129,8 @@ KISSY.add(function(S, evaluation){
           ret = S.filter(ret, function(item){
             return S.indexOf(item.value, filter) > -1;
           });
-        } else {
+        } else if (filter || filter === undefined) {
+          //当filter等于null的时候，说明关联的字段不存在，这样返回全部
           return undefined;
         }
       }
@@ -143,7 +144,14 @@ KISSY.add(function(S, evaluation){
      */
     item: function(key){
 
-      var items = this.get(key).values;
+      var items = this.get(key);
+
+      if (items) {
+        items = items.values;
+      } else {
+        return null;
+      }
+
       var val = this.get(key).defaultValue;
       var ret;
 

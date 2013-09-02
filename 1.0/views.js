@@ -16,6 +16,12 @@ KISSY.add(function(S, Event, XTemplate, Watch){
       this.el = el;
       this.template = new XTemplate(el.all('script').html());
 
+      if (this.template) {
+        S.log('get template html from script/xtempalte')
+      } else {
+        S.error('Get template html form script/xtempalte, got none');
+      }
+
       return this;
 
     },
@@ -24,6 +30,8 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
       var json = this.model.toJSON();
       json['__name__'] = this.name;
+
+      S.log('start render xtempalte for bidi-' + this.name);
 
       var html = this.template.render(json);
       html = html.replace(/>\s+>>><<</g, '');

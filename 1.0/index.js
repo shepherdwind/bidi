@@ -26,6 +26,8 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
     var ret;
     var meta = scopes[0][META];
 
+    S.log('bidi-' + name + ' add watch: ' + option.params.join(','));
+
     S.each(option.params, function(param, i){
 
       var params = S.map(param.split(':'), S.trim);
@@ -81,6 +83,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
       var model = Views[name].model;
 
+      S.log('linkage start run')
       //重新计算，这时候model的value会有改变
       scopes[0]['$$linkage'] = model.get(params[1]);
 
@@ -88,8 +91,9 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
       option.params[0] = scopes[0]['$$linkage'];
       var buf = option.commands.each(scopes, option);
 
-      delete scopes['$$linkage'];
+      delete scopes[0]['$$linkage'];
 
+      S.log('linkage start run success')
       return ' >>><<<' + html + '>' + buf;
 
     },
@@ -203,7 +207,12 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
     xbind: function(name, obj, augment){
 
+      if (!S.isString(name)) {
+        throw new Error('Bidi init fail, name must be string');
+      }
+
       Views[name] = new View(name, new Model(obj, augment));
+      S.log('init bidi, add view ' + name)
       return Views[name];
 
     },

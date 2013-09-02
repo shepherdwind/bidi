@@ -941,7 +941,8 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
           ret = S.filter(ret, function(item){
             return S.indexOf(item.value, filter) > -1;
           });
-        } else {
+        } else if (filter || filter === undefined) {
+          //当filter等于null的时候，说明关联的字段不存在，这样返回全部
           return undefined;
         }
       }
@@ -955,7 +956,14 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
      */
     item: function(key){
 
-      var items = this.get(key).values;
+      var items = this.get(key);
+
+      if (items) {
+        items = items.values;
+      } else {
+        return null;
+      }
+
       var val = this.get(key).defaultValue;
       var ret;
 
@@ -1866,6 +1874,12 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
       this.el = el;
       this.template = new XTemplate(el.all('script').html());
 
+      if (this.template) {
+        S.log('get template html from script/xtempalte')
+      } else {
+        S.error('Get template html form script/xtempalte, got none');
+      }
+
       return this;
 
     },
@@ -1874,6 +1888,8 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
 
       var json = this.model.toJSON();
       json['__name__'] = this.name;
+
+      S.log('start render xtempalte for bidi-' + this.name);
 
       var html = this.template.render(json);
       html = html.replace(/>\s+>>><<</g, '');
@@ -2033,6 +2049,8 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
     var ret;
     var meta = scopes[0][META];
 
+    S.log('bidi-' + name + ' add watch: ' + option.params.join(','));
+
     S.each(option.params, function(param, i){
 
       var params = S.map(param.split(':'), S.trim);
@@ -2088,6 +2106,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       var model = Views[name].model;
 
+      S.log('linkage start run')
       //重新计算，这时候model的value会有改变
       scopes[0]['$$linkage'] = model.get(params[1]);
 
@@ -2095,8 +2114,9 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
       option.params[0] = scopes[0]['$$linkage'];
       var buf = option.commands.each(scopes, option);
 
-      delete scopes['$$linkage'];
+      delete scopes[0]['$$linkage'];
 
+      S.log('linkage start run success')
       return ' >>><<<' + html + '>' + buf;
 
     },
@@ -2210,7 +2230,12 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
     xbind: function(name, obj, augment){
 
+      if (!S.isString(name)) {
+        throw new Error('Bidi init fail, name must be string');
+      }
+
       Views[name] = new View(name, new Model(obj, augment));
+      S.log('init bidi, add view ' + name)
       return Views[name];
 
     },
