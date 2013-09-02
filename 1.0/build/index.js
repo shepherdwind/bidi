@@ -907,9 +907,8 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
         args.push(this.get(null, parent));
       }
 
-      fn.apply(context, args);
+      return fn.apply(context, args);
 
-      return this;
     },
 
     _getAttr: function(key, base){
@@ -1001,7 +1000,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
           val.parent = this;
           ret = ret.call(val, parent);
         } else {
-          ret = ret.call(this, parent);
+          ret = ret.call(this, this.get(null, parent));
         }
       }
 
@@ -2240,11 +2239,15 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
     },
 
-    init: function(){
+    init: function(grep){
 
       $(".bidi-viewer").each(function(el){
 
         var name = el.attr('data-view');
+
+        //grep过滤
+        if (grep && name.indexOf(grep) < 0) return;
+
         var view = Views[name].setEl(el);
 
         //添加命令
@@ -2267,7 +2270,9 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
     // add pipe function
     pipe: function(name, fn){
       Watcher.pipe[name] = fn;
-    }
+    },
+
+    registerHelper: this.pipe
 
   };
 
