@@ -1458,7 +1458,7 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
           var paths = key.split('.');
 
           model.set(paths[0] + '.defaultValue', null);
-          model.fire('render:linkage', {key: key})
+          model.fire('render:linkage', { key: key, el: el })
 
         });
 
@@ -1691,9 +1691,11 @@ KISSY.add('gallery/bidi/1.0/watch/value',function(S){
         var $control = this.$control;
         var key = $control('key');
         var model = $control('model');
-        var val = model.evaluation($control).val || '""';
+        var val = model.evaluation($control).val;
 
-        this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
+        if (val) {
+          this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
+        }
       },
 
       _render: function(){
@@ -1863,6 +1865,7 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
 
     this.model = model;
     this.name = name;
+    this.elements = [];
 
   }
 
@@ -1897,6 +1900,39 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
       this.fire('inited');
 
       return this;
+    },
+
+    /**
+     * 通过绑定的key来获取dom节点，返回第一个dom节点
+     */
+    get: function(key){
+
+      var ret;
+
+      S.some(this.elements, function(element){
+        if (element.key === key) {
+          ret = element.el;
+          return true;
+        }
+      });
+
+      return ret;
+    },
+
+    /**
+     * 通过绑定的key来获取所有的dom节点
+     */
+    getAll: function(key){
+
+      var ret = [];
+
+      S.each(this.elements, function(element){
+        if (element.key === key) {
+          ret.push(element.el);
+        }
+      });
+
+      return ret;
     },
 
     watch: function(params, fn, scopes){
@@ -1937,9 +1973,11 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
 
         var _init = function(){
           // dom ready
-          w.$control('el', this.el.all(selector));
+          var el = this.el.all(selector);
+          w.$control('el', el);
           w.fire('ready');
 
+          this.elements.push( { key: key, el: el } );
           this.detach('inited', _init);
         }
 
@@ -1953,7 +1991,7 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
 
       }
 
-      return {id: id, html: html};
+      return { id: id, html: html };
     }
 
   });

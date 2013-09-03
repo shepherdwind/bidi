@@ -18,9 +18,11 @@ KISSY.add(function(S){
         var $control = this.$control;
         var key = $control('key');
         var model = $control('model');
-        var val = model.evaluation($control).val || '""';
+        var val = model.evaluation($control).val;
 
-        this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
+        if (val) {
+          this.$html = ' value= ' + val + ' id=' + $control('id') + ' ';
+        }
       },
 
       _render: function(){
