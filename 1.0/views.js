@@ -6,6 +6,7 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
     this.model = model;
     this.name = name;
+    this.elements = [];
 
   }
 
@@ -40,6 +41,39 @@ KISSY.add(function(S, Event, XTemplate, Watch){
       this.fire('inited');
 
       return this;
+    },
+
+    /**
+     * 通过绑定的key来获取dom节点，返回第一个dom节点
+     */
+    get: function(key){
+
+      var ret;
+
+      S.some(this.elements, function(element){
+        if (element.key === key) {
+          ret = element.el;
+          return true;
+        }
+      });
+
+      return ret;
+    },
+
+    /**
+     * 通过绑定的key来获取所有的dom节点
+     */
+    getAll: function(key){
+
+      var ret = [];
+
+      S.each(this.elements, function(element){
+        if (element.key === key) {
+          ret.push(element.el);
+        }
+      });
+
+      return ret;
     },
 
     watch: function(params, fn, scopes){
@@ -80,9 +114,11 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
         var _init = function(){
           // dom ready
-          w.$control('el', this.el.all(selector));
+          var el = this.el.all(selector);
+          w.$control('el', el);
           w.fire('ready');
 
+          this.elements.push( { key: key, el: el } );
           this.detach('inited', _init);
         }
 
@@ -96,7 +132,7 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
       }
 
-      return {id: id, html: html};
+      return { id: id, html: html };
     }
 
   });
