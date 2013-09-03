@@ -6,6 +6,8 @@
 KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
   "use strict";
+  //firefox下，Object.prototype.watch存在，导致xtempalte运行挂了
+  delete Object.prototype.watch;
 
   var EMPTY = '';
   var $ = Node.all;
