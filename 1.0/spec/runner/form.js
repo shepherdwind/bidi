@@ -6,8 +6,8 @@ KISSY.add(function(){
     it('select value should equal to defaultValue in model', function(){
       var form = window.Bidi.form
       var model = form.model
-      var el = form.el.all('.form-group').item(0)
-      var select = el.all('select')
+      var el = form.get('problem.$item.text')
+      var select = form.get('problem.defaultValue')
 
       expect( +select.val() ).to.be(model.get('problem.defaultValue'))
     })
@@ -76,8 +76,10 @@ KISSY.add(function(){
     it('linkage support, problem.defaultValue change with select', function(){
       var form = window.Bidi.form
       var model = form.model
-      var select = form.el.all('.form-group').item(0).all('select')
-      var radioBox = form.el.all('.form-group').item(1).all('.col-lg-10')
+      //问题描述的select
+      var select = form.get('problem.defaultValue')
+      //问题描述radio
+      var radioBox = form.get('reasons.values')
       var reasons = model.get('problem.$item.reasons')
       var value = model.get('problem.$item.value')
 
@@ -112,9 +114,11 @@ KISSY.add(function(){
     it('sub linkage support, reasons.defaultValue change with subs', function(){
       var form = window.Bidi.form
       var model = form.model
-      var select = form.el.all('.form-group').item(0).all('select')
-      var radioBox = form.el.all('.form-group').item(1).all('.col-lg-10')
-      var subEl = form.el.all('.form-group').item(2)
+      //退款原因select
+      var select = form.get('problem.defaultValue')
+      //退款具体原因的radio集合
+      var radioBox = form.get('reasons.values')
+      var subEl = form.get('!subs.values')
 
       select.val(1)
       select.fire('change')
@@ -122,6 +126,7 @@ KISSY.add(function(){
 
       //选中第一个radio，将出现第三级联动的radio
       radioBox.all('input').item(0).fire('click')
+      radioBox.all('input').item(0).fire('change')
       var subs = model.get('reasons.$item.subs')
       expect(subs.length).to.be(2)
       expect(subEl.all('input').length).to.be(2)
@@ -129,6 +134,8 @@ KISSY.add(function(){
 
       //选中第二个radio，第三级隐藏，并且radio为空
       radioBox.all('input').item(1).fire('click')
+      radioBox.all('input').item(1).fire('change')
+
       expect(subEl.hasClass('hide')).to.be(true)
       expect(subEl.all('input').length).to.be(0)
     })
@@ -148,11 +155,13 @@ KISSY.add(function(){
 
       //选中已寄回商品，需要显示label-warning提示，退货信息和退货反馈
       radio[0].click()
+      radio.fire('change')
       expect(warning.hasClass('hide')).to.be(false)
       expect(logistics.hasClass('hide')).to.be(false)
       expect(feedback.hasClass('hide')).to.be(false)
 
       radio1[0].click()
+      radio.fire('change')
       expect(warning.hasClass('hide')).to.be(true)
       expect(logistics.hasClass('hide')).to.be(true)
       expect(feedback.hasClass('hide')).to.be(true)
@@ -170,6 +179,7 @@ KISSY.add(function(){
 
       var radio = form.el.all('.reasons').all('input')
       radio.item(0).fire('click')
+      radio.item(0).fire('change')
       expect(model.get('reasons.$item.jude')).to.be(true)
       expect(jude.hasClass('hide')).to.be(false)
 
