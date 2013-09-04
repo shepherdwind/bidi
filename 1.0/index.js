@@ -6,7 +6,7 @@
 KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
   //firefox下，Object.prototype.watch存在，导致xtempalte运行挂了
-  //delete Object.prototype.watch;
+  delete Object.prototype.watch;
 
   var EMPTY = '';
   var $ = Node.all;
@@ -94,7 +94,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
       delete scopes[0]['$$linkage'];
 
-      S.log('linkage start run success');
+      S.log('linkage start run success')
       return ' >>><<<' + html + '>' + buf;
 
     },
@@ -148,7 +148,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
     },
 
-    within: function(scopes, option, params, name, html){
+    'with': function(scopes, option, params, name, html){
 
       var model = Views[name].model;
       var len = scopes.length - 1;
