@@ -126,7 +126,7 @@ KISSY.add(function(S, evaluation){
         if (filter && filter[last]) {
           filter = filter[last];
           ret = S.filter(ret, function(item){
-            return S.indexOf(item.value, filter) > -1;
+            return item && S.indexOf(item.value, filter) > -1;
           });
         } else if (filter || filter === undefined) {
           //当filter等于null的时候，说明关联的字段不存在，这样返回全部
@@ -146,12 +146,12 @@ KISSY.add(function(S, evaluation){
       var items = this.get(key);
 
       if (items) {
+        var val = items.defaultValue;
         items = items.values;
       } else {
         return null;
       }
 
-      var val = this.get(key).defaultValue;
       var ret;
 
       if (!items) return ret;

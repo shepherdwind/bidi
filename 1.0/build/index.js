@@ -662,6 +662,22 @@ KISSY.add('gallery/bidi/1.0/expression/index',function(S, Parse){
 
   "use strict";
 
+  //ie 8一下不支持getPrototypeOf方法
+  //see http://ejohn.org/blog/objectgetprototypeof
+  if ( typeof Object.getPrototypeOf !== "function" ) {
+    if ( typeof "test".__proto__ === "object" ) {
+      Object.getPrototypeOf = function(object){
+        return object.__proto__;
+      };
+    } else {
+      Object.getPrototypeOf = function(object){
+        // May break if the constructor has been tampered with
+        return object.constructor.prototype;
+      };
+    }
+  }
+  
+
   // 模型求值运算，支持以下表达式
   // 1. 基本属性求值，attrname  attrname.key attrname.length
   // 2. 其他运算表达式，支持逻辑运算、比较运算 !a ,  a || b , a && b
@@ -938,7 +954,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
         if (filter && filter[last]) {
           filter = filter[last];
           ret = S.filter(ret, function(item){
-            return S.indexOf(item.value, filter) > -1;
+            return item && S.indexOf(item.value, filter) > -1;
           });
         } else if (filter || filter === undefined) {
           //当filter等于null的时候，说明关联的字段不存在，这样返回全部
@@ -958,12 +974,12 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
       var items = this.get(key);
 
       if (items) {
+        var val = items.defaultValue;
         items = items.values;
       } else {
         return null;
       }
 
-      var val = this.get(key).defaultValue;
       var ret;
 
       if (!items) return ret;
@@ -2065,9 +2081,8 @@ KISSY.add('gallery/bidi/1.0/macros',function(){
  **/
 KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
-  "use strict";
   //firefox下，Object.prototype.watch存在，导致xtempalte运行挂了
-  delete Object.prototype.watch;
+  //delete Object.prototype.watch;
 
   var EMPTY = '';
   var $ = Node.all;
@@ -2155,7 +2170,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       delete scopes[0]['$$linkage'];
 
-      S.log('linkage start run success')
+      S.log('linkage start run success');
       return ' >>><<<' + html + '>' + buf;
 
     },
@@ -2209,7 +2224,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
     },
 
-    with: function(scopes, option, params, name, html){
+    within: function(scopes, option, params, name, html){
 
       var model = Views[name].model;
       var len = scopes.length - 1;
@@ -2223,7 +2238,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       return ' >>><<<' + html + '>' + buf;
 
-    },
+    }
 
   };
 

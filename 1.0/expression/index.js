@@ -2,6 +2,22 @@ KISSY.add(function(S, Parse){
 
   "use strict";
 
+  //ie 8一下不支持getPrototypeOf方法
+  //see http://ejohn.org/blog/objectgetprototypeof
+  if ( typeof Object.getPrototypeOf !== "function" ) {
+    if ( typeof "test".__proto__ === "object" ) {
+      Object.getPrototypeOf = function(object){
+        return object.__proto__;
+      };
+    } else {
+      Object.getPrototypeOf = function(object){
+        // May break if the constructor has been tampered with
+        return object.constructor.prototype;
+      };
+    }
+  }
+  
+
   // 模型求值运算，支持以下表达式
   // 1. 基本属性求值，attrname  attrname.key attrname.length
   // 2. 其他运算表达式，支持逻辑运算、比较运算 !a ,  a || b , a && b
