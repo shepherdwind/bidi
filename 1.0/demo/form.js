@@ -8,7 +8,7 @@ KISSY.add(function(S, Bidi){
       defaultValue: 2,
       values: [
         {value: 1, text: '大小尺寸不符合', reasons: [11, 12]},
-        {value: 2, text: '材料面料不符合', reasons: [21, 22]},
+        {value: 2, text: '材料面料不符合', reasons: [21]},
         {value: 3, text: '工艺手艺问题', reasons: [31, 32, 33]},
         {value: 4, text: '颜色、款式、图案描述不符', reasons: [44, 45]},
         {value: 5, text: '颜色、款式、图案描述不符'}

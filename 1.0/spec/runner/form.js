@@ -111,6 +111,14 @@ KISSY.add(function(){
       expect(inputs.attr('name')).to.be(name)
     })
 
+    it('linkage support attribute call', function(){
+      var form = window.Bidi.form
+      var model = form.model
+      var len = (model.get('reasons.values.length'))
+      var reasonsEls = form.get('reasons.values').all('input')
+      expect(reasonsEls.length).to.be(len)
+    })
+
     it('sub linkage support, reasons.defaultValue change with subs', function(){
       var form = window.Bidi.form
       var model = form.model

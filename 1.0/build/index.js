@@ -935,10 +935,58 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
 
     },
 
+    _getLinkage: function(key, ret){
+
+      var _key, _value, _paths;
+      _paths = key.split('.');
+
+      S.each(this.linkages, function(v, linkKey){
+
+        if (key.indexOf(linkKey) === 0){
+
+          _key = linkKey;
+
+          var paths = _key.split('.');
+          var filter = this.item(v);
+          var last = paths[0];
+
+          S.each(paths, function(path){
+            ret = ret[path];
+            if (ret === undefined) return false;
+          });
+
+          _paths = _paths.slice(paths.length);
+
+          if (filter && filter[last]) {
+            filter = filter[last];
+            _value = S.filter(ret, function(item){
+              return item && S.indexOf(item.value, filter) > -1;
+            });
+          } else if (filter || filter === undefined) {
+            //当filter等于null的时候，说明关联的字段不存在，这样返回全部
+            _value = undefined;
+          }
+
+          return false;
+        }
+
+      }, this);
+
+      return { key: _key, value: _value, paths: _paths };
+
+    },
+
     _getAttr: function(key, base){
 
-      var paths = key.split('.');
       var ret = base || this.attributes;
+      var paths = key.split('.');
+
+      var linkage = this._getLinkage(key, ret);
+
+      if (linkage.key) {
+        ret = linkage.value;
+        paths = linkage.paths;
+      }
 
       //$aa.$item.attr
       if (paths.length > 2 && paths[1] === '$item') {
@@ -949,26 +997,9 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
       }
 
       S.each(paths, function(path){
-        ret = ret[path];
+        ret = ret && ret[path];
         if (ret === undefined) return false;
       });
-
-      if (key in this.linkages) {
-
-        var link = this.linkages[key];
-        var filter = this.item(link);
-        var last = paths[0];
-
-        if (filter && filter[last]) {
-          filter = filter[last];
-          ret = S.filter(ret, function(item){
-            return item && S.indexOf(item.value, filter) > -1;
-          });
-        } else if (filter || filter === undefined) {
-          //当filter等于null的时候，说明关联的字段不存在，这样返回全部
-          return undefined;
-        }
-      }
 
       return ret;
     },
@@ -1483,6 +1514,7 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
           var paths = key.split('.');
 
           model.set(paths[0] + '.defaultValue', null);
+          $control('view').fire('inited');
           model.fire('render:linkage', { key: key, el: el })
 
         });
@@ -1677,24 +1709,37 @@ KISSY.add('gallery/bidi/1.0/watch/action',function(S){
 
   return function(watch){
 
-    watch.add('action', function(){
+    watch.add('action', {
 
-      var $control = this.$control;
-      var model = $control('model');
-      var evt = $control('key');
-      var selector = $control('selector');
-      var argv = $control('argv');
-      var fn = argv[0];
+      init: function(){
 
-      $control('el').on(evt, function(e){
-        var parent = $control('parent');
-        model.call(fn, e, null, parent);
-      });
+        var $control = this.$control;
+        var model = $control('model');
+        var evt = $control('key');
+        var selector = $control('selector');
+        var argv = $control('argv');
+        var fn = argv[0];
+
+        if (fn) {
+          $control('el').on(evt, function(e){
+            var parent = $control('parent');
+            model.call(fn, e, null, parent);
+          });
+        }
+
+      },
+
+      beforeReady: function(){
+        var $control = this.$control;
+        var model = $control('model');
+        var val = model.evaluation($control).val || '';
+        this.$html = val;
+      }
     });
 
   }
 
-} );
+});
 
 KISSY.add('gallery/bidi/1.0/watch/value',function(S){
 

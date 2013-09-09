@@ -99,10 +99,58 @@ KISSY.add(function(S, evaluation){
 
     },
 
+    _getLinkage: function(key, ret){
+
+      var _key, _value, _paths;
+      _paths = key.split('.');
+
+      S.each(this.linkages, function(v, linkKey){
+
+        if (key.indexOf(linkKey) === 0){
+
+          _key = linkKey;
+
+          var paths = _key.split('.');
+          var filter = this.item(v);
+          var last = paths[0];
+
+          S.each(paths, function(path){
+            ret = ret[path];
+            if (ret === undefined) return false;
+          });
+
+          _paths = _paths.slice(paths.length);
+
+          if (filter && filter[last]) {
+            filter = filter[last];
+            _value = S.filter(ret, function(item){
+              return item && S.indexOf(item.value, filter) > -1;
+            });
+          } else if (filter || filter === undefined) {
+            //当filter等于null的时候，说明关联的字段不存在，这样返回全部
+            _value = undefined;
+          }
+
+          return false;
+        }
+
+      }, this);
+
+      return { key: _key, value: _value, paths: _paths };
+
+    },
+
     _getAttr: function(key, base){
 
-      var paths = key.split('.');
       var ret = base || this.attributes;
+      var paths = key.split('.');
+
+      var linkage = this._getLinkage(key, ret);
+
+      if (linkage.key) {
+        ret = linkage.value;
+        paths = linkage.paths;
+      }
 
       //$aa.$item.attr
       if (paths.length > 2 && paths[1] === '$item') {
@@ -113,26 +161,9 @@ KISSY.add(function(S, evaluation){
       }
 
       S.each(paths, function(path){
-        ret = ret[path];
+        ret = ret && ret[path];
         if (ret === undefined) return false;
       });
-
-      if (key in this.linkages) {
-
-        var link = this.linkages[key];
-        var filter = this.item(link);
-        var last = paths[0];
-
-        if (filter && filter[last]) {
-          filter = filter[last];
-          ret = S.filter(ret, function(item){
-            return item && S.indexOf(item.value, filter) > -1;
-          });
-        } else if (filter || filter === undefined) {
-          //当filter等于null的时候，说明关联的字段不存在，这样返回全部
-          return undefined;
-        }
-      }
 
       return ret;
     },

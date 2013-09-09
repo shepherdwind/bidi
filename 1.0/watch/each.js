@@ -30,6 +30,7 @@ KISSY.add(function(S, XTemplate){
           var paths = key.split('.');
 
           model.set(paths[0] + '.defaultValue', null);
+          $control('view').fire('inited');
           model.fire('render:linkage', { key: key, el: el })
 
         });
