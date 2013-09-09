@@ -64,7 +64,7 @@ KISSY.add(function(S, evaluation){
 
       var val = this._getAttr(key);
 
-      if (typeof val == 'function') {
+      if (typeof val == 'function' && !this.__forbidden_call) {
         val = val.call(this);
       }
 
@@ -280,7 +280,7 @@ KISSY.add(function(S, evaluation){
 
       var json = {};
 
-      this.__forbidden_set = true;
+      this.__forbidden_call = true;
 
       S.each(this.attributes, function(val, key){
 
@@ -290,7 +290,7 @@ KISSY.add(function(S, evaluation){
 
       }, this); 
 
-      delete this.__forbidden_set;
+      delete this.__forbidden_call;
 
       return json;
     },
@@ -334,7 +334,7 @@ KISSY.add(function(S, evaluation){
     set: function(key, value, parent){
 
       // 临时禁止set方法，在toJSON方法调用的时候需要如此
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       if (parent) {
         return this._setByParent(key, value, parent);
@@ -381,7 +381,7 @@ KISSY.add(function(S, evaluation){
      */
     remove: function(obj){
 
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       if (obj.__parent__)
         obj = obj.__parent__;
@@ -412,7 +412,7 @@ KISSY.add(function(S, evaluation){
      */
     add: function(obj, key){
 
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       obj['__parent__'] = { id: S.guid('$id'), name: key};
       var lists = this.get(key);

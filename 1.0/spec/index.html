@@ -237,7 +237,7 @@
         <!-- Chosen mail -->
         <div class="viewMail" {{watch "class: !choosedMail: hide"}}>
           <div class="mail">
-            {{#watch "render: choosedMail"}}
+            {{#watch "with: choosedMail"}}
             <div class="mailInfo">
               <h1>{{subject}}</h1>
               <p><label>From</label>: <span>{{from}}</span></p>

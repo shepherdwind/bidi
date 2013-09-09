@@ -12,7 +12,7 @@ gallery/bidi/1.0/watch/attr
 gallery/bidi/1.0/watch/each
 gallery/bidi/1.0/watch/radio
 gallery/bidi/1.0/watch/list
-gallery/bidi/1.0/watch/render
+gallery/bidi/1.0/watch/with
 gallery/bidi/1.0/watch/action
 gallery/bidi/1.0/watch/value
 gallery/bidi/1.0/watch/index
@@ -900,7 +900,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
 
       var val = this._getAttr(key);
 
-      if (typeof val == 'function') {
+      if (typeof val == 'function' && !this.__forbidden_call) {
         val = val.call(this);
       }
 
@@ -1116,7 +1116,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
 
       var json = {};
 
-      this.__forbidden_set = true;
+      this.__forbidden_call = true;
 
       S.each(this.attributes, function(val, key){
 
@@ -1126,7 +1126,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
 
       }, this); 
 
-      delete this.__forbidden_set;
+      delete this.__forbidden_call;
 
       return json;
     },
@@ -1170,7 +1170,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
     set: function(key, value, parent){
 
       // 临时禁止set方法，在toJSON方法调用的时候需要如此
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       if (parent) {
         return this._setByParent(key, value, parent);
@@ -1217,7 +1217,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
      */
     remove: function(obj){
 
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       if (obj.__parent__)
         obj = obj.__parent__;
@@ -1248,7 +1248,7 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
      */
     add: function(obj, key){
 
-      if (this.__forbidden_set) return;
+      if (this.__forbidden_call) return;
 
       obj['__parent__'] = { id: S.guid('$id'), name: key};
       var lists = this.get(key);
@@ -1654,13 +1654,13 @@ KISSY.add('gallery/bidi/1.0/watch/list',function(S, XTemplate){
   requires: ['xtemplate']
 });
 
-KISSY.add('gallery/bidi/1.0/watch/render',function(S, XTemplate){
+KISSY.add('gallery/bidi/1.0/watch/with',function(S, XTemplate){
 
   "use strict";
 
   function add(watch){
 
-    watch.add('render', {
+    watch.add('with', {
 
       init: function(){
 
@@ -1921,7 +1921,7 @@ KISSY.add('gallery/bidi/1.0/watch/index',function(S){
     './each',
     './radio',
     './list',
-    './render',
+    './with',
     './action',
     './value'
   ]
@@ -2226,23 +2226,6 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       S.log('linkage start run success')
       return ' >>><<<' + html + '>' + buf;
-
-    },
-
-    render: function(scopes, option, params, name, html){
-
-      var model = Views[name].model;
-      var len = scopes.length - 1;
-
-      option.params[0] = scopes[0][params[1]];
-
-      var param0 = option.params[0];
-      var opScopes = [param0, scopes];
-
-      var buf = option.fn(opScopes).replace(/^>/, '');
-
-      return ' >>><<<' + html + '>' + buf;
-
 
     },
 

@@ -4,7 +4,7 @@ KISSY.add(function(S, XTemplate){
 
   function add(watch){
 
-    watch.add('render', {
+    watch.add('with', {
 
       init: function(){
 

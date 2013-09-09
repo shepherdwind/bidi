@@ -78,7 +78,7 @@ KISSY.add(function(S){
     './each',
     './radio',
     './list',
-    './render',
+    './with',
     './action',
     './value'
   ]
