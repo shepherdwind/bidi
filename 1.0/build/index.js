@@ -1670,7 +1670,7 @@ KISSY.add('gallery/bidi/1.0/watch/with',function(S, XTemplate){
 
         model.change(key, function(e){
 
-          if (e.$item) return;
+          if (e.$item || e.path.length) return;
 
           var fn = $control('fn');
           var option = {params: [e.val], fn: fn};
