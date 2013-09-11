@@ -2274,7 +2274,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
       option.params[0] = scopes[0][params[1]];
 
-      var param0 = option.params[0];
+      var param0 = option.params[0] || [];
       var opScopes = [0, 0].concat(scopes);
       var xcount = param0.length;
 
