@@ -4,34 +4,23 @@ KISSY.add(function(S){
 
   return function(watch){
 
-    watch.add('action', {
+    watch.add('action', function(){
 
-      init: function(){
+      var $control = this.$control;
+      var model = $control('model');
+      var evt = $control('key');
+      var selector = $control('selector');
+      var argv = $control('argv');
+      var fn = argv[0];
 
-        var $control = this.$control;
-        var model = $control('model');
-        var evt = $control('key');
-        var selector = $control('selector');
-        var argv = $control('argv');
-        var fn = argv[0];
-
-        if (fn) {
-          $control('el').on(evt, function(e){
-            var parent = $control('parent');
-            model.call(fn, e, null, parent);
-          });
-        }
-
-      },
-
-      beforeReady: function(){
-        var $control = this.$control;
-        var model = $control('model');
-        var val = model.evaluation($control).val || '';
-        this.$html = val;
+      if (fn) {
+        $control('el').on(evt, function(e){
+          var parent = $control('parent');
+          model.call(fn, e, null, parent);
+        });
       }
     });
 
   }
 
-});
+} );

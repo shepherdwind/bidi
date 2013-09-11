@@ -2,6 +2,20 @@ KISSY.add(function(S, XTemplate){
 
   "use strict";
 
+  function getRadioValue(el){
+
+    var ret;
+
+    el.all('input').each(function(element){
+      if (element.attr('checked')) {
+        ret = element.val();
+      }
+    });
+
+    return ret;
+
+  }
+
   function add(watch){
 
     watch.add('linkage', {
@@ -14,11 +28,12 @@ KISSY.add(function(S, XTemplate){
         var model = $control('model');
         var key = $control('key');
         var linkage = $control('argv')[0];
+        var el = $control('el');
+        var paths = key.split('.');
 
         model.change(linkage, function(){
 
           var fn = $control('fn');
-          var el = $control('el');
 
           var html = new XTemplate(fn);
           var option = {params: [model.get(key)], fn: fn};
@@ -27,15 +42,18 @@ KISSY.add(function(S, XTemplate){
           html = html.runtime.option.commands.each(scopesNew, option);
           el.html(html);
 
-          var paths = key.split('.');
-
-          model.set(paths[0] + '.defaultValue', null);
+          model.set(paths[0] + '.defaultValue', getRadioValue(el));
           $control('view').fire('inited');
           model.fire('render:linkage', { key: key, el: el })
 
         });
 
+        var val = getRadioValue(el);
+        if (val) {
+          model.set(paths[0] + '.defaultValue', el.all('input').val());
+        }
       },
+
 
       beforeReady: function(){
 

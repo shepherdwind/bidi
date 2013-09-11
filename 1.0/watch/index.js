@@ -80,6 +80,7 @@ KISSY.add(function(S){
     './list',
     './with',
     './action',
+    './print',
     './value'
   ]
 });

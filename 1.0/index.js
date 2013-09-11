@@ -238,6 +238,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
   };
 
+  Bidi.active(['print']);
   return Bidi;
 
 }, {

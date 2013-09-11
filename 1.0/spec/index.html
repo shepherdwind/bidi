@@ -73,7 +73,7 @@
                 <div class="col-lg-10">
                   {{#watch "linkage: reasons.values: problem" "radio: reasons.defaultValue"}}
                   <label class="radio-inline">
-                    <input type="radio" name="{{../name}}" value="{{value}}" {{watch "attr: reasons.values.length == 1: checked"}}/>
+                    <input type="radio" name="{{../name}}" value="{{value}}" {{print "reasons.values.length == 1: checked"}}/>
                     {{text}}
                   </label>
                   {{/watch}}
