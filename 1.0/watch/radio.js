@@ -2,6 +2,20 @@ KISSY.add(function(S){
 
   "use strict";
 
+  function getRadioValue(el){
+
+    var ret;
+
+    el.all('input').each(function(element){
+      if (element.attr('checked')) {
+        ret = element.val();
+      }
+    });
+
+    return ret;
+
+  }
+
   return function(watch){
 
     watch.add('radio', function(){
@@ -19,6 +33,11 @@ KISSY.add(function(S){
         model.set(key, val);
 
       });
+
+      var val = getRadioValue(el);
+      if (val) {
+        model.set(key, val);
+      }
 
     });
 
