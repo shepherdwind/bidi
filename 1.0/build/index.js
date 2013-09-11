@@ -14,6 +14,7 @@ gallery/bidi/1.0/watch/radio
 gallery/bidi/1.0/watch/list
 gallery/bidi/1.0/watch/with
 gallery/bidi/1.0/watch/action
+gallery/bidi/1.0/watch/print
 gallery/bidi/1.0/watch/value
 gallery/bidi/1.0/watch/index
 gallery/bidi/1.0/views
@@ -1486,6 +1487,20 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
 
   "use strict";
 
+  function getRadioValue(el){
+
+    var ret;
+
+    el.all('input').each(function(element){
+      if (element.attr('checked')) {
+        ret = element.val();
+      }
+    });
+
+    return ret;
+
+  }
+
   function add(watch){
 
     watch.add('linkage', {
@@ -1498,11 +1513,12 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
         var model = $control('model');
         var key = $control('key');
         var linkage = $control('argv')[0];
+        var el = $control('el');
+        var paths = key.split('.');
 
         model.change(linkage, function(){
 
           var fn = $control('fn');
-          var el = $control('el');
 
           var html = new XTemplate(fn);
           var option = {params: [model.get(key)], fn: fn};
@@ -1511,15 +1527,18 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
           html = html.runtime.option.commands.each(scopesNew, option);
           el.html(html);
 
-          var paths = key.split('.');
-
-          model.set(paths[0] + '.defaultValue', null);
+          model.set(paths[0] + '.defaultValue', getRadioValue(el));
           $control('view').fire('inited');
           model.fire('render:linkage', { key: key, el: el })
 
         });
 
+        var val = getRadioValue(el);
+        if (val) {
+          model.set(paths[0] + '.defaultValue', el.all('input').val());
+        }
       },
+
 
       beforeReady: function(){
 
@@ -1709,31 +1728,49 @@ KISSY.add('gallery/bidi/1.0/watch/action',function(S){
 
   return function(watch){
 
-    watch.add('action', {
+    watch.add('action', function(){
 
-      init: function(){
+      var $control = this.$control;
+      var model = $control('model');
+      var evt = $control('key');
+      var selector = $control('selector');
+      var argv = $control('argv');
+      var fn = argv[0];
 
-        var $control = this.$control;
-        var model = $control('model');
-        var evt = $control('key');
-        var selector = $control('selector');
-        var argv = $control('argv');
-        var fn = argv[0];
+      if (fn) {
+        $control('el').on(evt, function(e){
+          var parent = $control('parent');
+          model.call(fn, e, null, parent);
+        });
+      }
+    });
 
-        if (fn) {
-          $control('el').on(evt, function(e){
-            var parent = $control('parent');
-            model.call(fn, e, null, parent);
-          });
-        }
+  }
 
-      },
+} );
+
+KISSY.add('gallery/bidi/1.0/watch/print',function(S){
+
+  "use strict";
+
+  return function(watch){
+
+    //print命令，只在模板渲染时候运行，如果key的运算为true，则返回第二个字符串，
+    //或者key运算的返回值，不做任何的绑定
+    watch.add('print', {
+
+      init: function(){},
 
       beforeReady: function(){
         var $control = this.$control;
         var model = $control('model');
-        var val = model.evaluation($control).val || '';
-        this.$html = val;
+        var val = model.evaluation($control).val;
+        var text = $control('argv')[0];
+        if (val) {
+          this.$html = text || val;
+        } else {
+          this.$html = '';
+        }
       }
     });
 
@@ -1923,6 +1960,7 @@ KISSY.add('gallery/bidi/1.0/watch/index',function(S){
     './list',
     './with',
     './action',
+    './print',
     './value'
   ]
 });
@@ -2368,6 +2406,7 @@ KISSY.add('gallery/bidi/1.0/index',function (S, Node, Base, XTemplate, Model, Vi
 
   };
 
+  Bidi.active(['print']);
   return Bidi;
 
 }, {
