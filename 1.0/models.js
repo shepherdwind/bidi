@@ -101,7 +101,7 @@ KISSY.add(function(S, evaluation){
 
     _getLinkage: function(key, ret){
 
-      var _key, _value, _paths;
+      var _key, _paths;
       _paths = key.split('.');
 
       S.each(this.linkages, function(v, linkKey){
@@ -123,12 +123,12 @@ KISSY.add(function(S, evaluation){
 
           if (filter && filter[last]) {
             filter = filter[last];
-            _value = S.filter(ret, function(item){
+            ret = S.filter(ret, function(item){
               return item && S.indexOf(item.value, filter) > -1;
             });
           } else if (filter || filter === undefined) {
             //当filter等于null的时候，说明关联的字段不存在，这样返回全部
-            _value = undefined;
+            ret = undefined;
           }
 
           return false;
@@ -136,7 +136,7 @@ KISSY.add(function(S, evaluation){
 
       }, this);
 
-      return { key: _key, value: _value, paths: _paths };
+      return { key: _key, value: ret, paths: _paths };
 
     },
 
