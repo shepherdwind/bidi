@@ -1487,10 +1487,16 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
 
   "use strict";
 
-  function getRadioValue(el){
+  function getValue(el){
 
     var ret;
 
+    // select
+    if (el.getDOMNode().tagName.toLowerCase() == 'select') {
+      return el.val();
+    }
+
+    // radio
     el.all('input').each(function(element){
       if (element.attr('checked')) {
         ret = element.val();
@@ -1527,13 +1533,13 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
           html = html.runtime.option.commands.each(scopesNew, option);
           el.html(html);
 
-          model.set(paths[0] + '.defaultValue', getRadioValue(el));
+          model.set(paths[0] + '.defaultValue', getValue(el));
           $control('view').fire('inited');
           model.fire('render:linkage', { key: key, el: el })
 
         });
 
-        var val = getRadioValue(el);
+        var val = getValue(el);
         if (val) {
           model.set(paths[0] + '.defaultValue', el.all('input').val());
         }
