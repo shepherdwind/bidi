@@ -253,6 +253,41 @@
 
     </div>
 
+    <div class="container bidi-viewer" data-view="form-h">
+      <script type="text/xtemplte">
+        <div class="panel panel-primary">
+          <div class="panel-heading">复杂表单示例</div>
+            <form class="form-horizontal" action="#">
+
+              <div class="form-group problem">
+                <label class="col-lg-2 control-label">问题原因: </label>
+                <div class="col-lg-10">
+                  <p class="form-control-static">
+                    <select name="select1" {{watch "select: reasons.defaultValue"}}>
+                      {{#each reasons.values}}
+                      <option value="{{value}}">{{text}}</option>
+                      {{/each}}
+                    </select>
+                  </p>
+                </div>
+              </div>
+
+              <div class="form-group problem">
+                <label class="col-lg-2 control-label">问题描述: </label>
+                <div class="col-lg-10">
+                  {{#watch "linkage: descriptions.values: reasons" "radio: descriptions.defaultValue"}}
+                  <label class="radio-inline">
+                    <input type="radio" name="aaa" value="{{value}}" {{print "descriptions.values.length == 1: checked"}}/>
+                    {{text}}
+                  </label>
+                  {{/watch}}
+                </div>
+              </div>
+              </form>
+        </div>
+      </script>
+
+    </div>
     <div id="mocha"></div>
 
     <script src="mocha.js"></script>

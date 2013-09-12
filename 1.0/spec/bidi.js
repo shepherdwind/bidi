@@ -1,4 +1,4 @@
-KISSY.add(function(S, Bidi, simple, form, lists, webmail, Uri){
+KISSY.add(function(S, Bidi, simple, form, lists, webmail, formH, Uri){
 
   window.Bidi = {};
   window.Bidi.simple = simple;
@@ -14,6 +14,8 @@ KISSY.add(function(S, Bidi, simple, form, lists, webmail, Uri){
   if (g && g.indexOf) {
     if (g.indexOf('Simple') === 0) {
       grep = 'user'
+    } else if (g.indexOf('FormH') === 0) {
+      grep = 'form-h'
     } else if (g.indexOf('Form') === 0) {
       grep = 'form'
     } else if (g.indexOf('List') === 0) {
@@ -48,6 +50,7 @@ KISSY.add(function(S, Bidi, simple, form, lists, webmail, Uri){
     '../demo/form',
     '../demo/lists',
     '../demo/webmail',
+    '../demo/form-h',
     'uri'
   ]
 })
