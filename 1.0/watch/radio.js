@@ -35,7 +35,8 @@ KISSY.add(function(S){
       });
 
       var val = getRadioValue(el);
-      if (val) {
+
+      if (val && model.get(key) != val) {
         S.later(function(){
           model.set(key, val);
         });

@@ -259,20 +259,34 @@
           <div class="panel-heading">复杂表单示例</div>
             <form class="form-horizontal" action="#">
 
-              <div class="form-group problem">
+              <div class="form-group goodsStatus">
+                <label class="col-lg-2 control-label">是否收到货: </label>
+                <div class="col-lg-10"  {{watch "radio: goodsStatus.defaultValue"}}>
+                    {{#each goodsStatus.values}}
+                      <label class="radio-inline">
+                          <input name="goodsStatus" type="radio" class="radio" value="{{value}}" 
+                          {{#if value === goodsStatus.defaultValue}}checked{{/if}} > {{text}}
+                      </label>
+                    {{/each}}
+                </div>
+              </div>
+
+              <div class="form-group reasons">
                 <label class="col-lg-2 control-label">问题原因: </label>
                 <div class="col-lg-10">
                   <p class="form-control-static">
-                    <select name="select1" {{watch "select: reasons.defaultValue"}}>
-                      {{#each reasons.values}}
-                      <option value="{{value}}">{{text}}</option>
-                      {{/each}}
+                    <select name="select1">
+                      {{#watch  "linkage: reasons.values: goodsStatus" "select:reasons.defaultValue"}}
+                      {{@if xindex}} {{else}}<option value="-1" {{print "!reasons.defaultValue:selected"}}>请选择原因</option> {{/if}}
+                      <option value="{{value}}" {{#if value === reasons.defaultValue}}selected{{/if}}>{{text}}</option>
+                      {{/watch}}
                     </select>
+                    <input type="hidden" name="reasonsText" {{watch "value: reasons.$item.text"}}>
                   </p>
                 </div>
               </div>
 
-              <div class="form-group problem">
+              <div class="form-group descriptions">
                 <label class="col-lg-2 control-label">问题描述: </label>
                 <div class="col-lg-10">
                   {{#watch "linkage: descriptions.values: reasons" "radio: descriptions.defaultValue"}}

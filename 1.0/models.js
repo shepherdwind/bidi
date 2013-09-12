@@ -356,10 +356,12 @@ KISSY.add(function(S, evaluation){
 
       var last = paths[len - 1];
 
-      attr[last] = value;
-
       //如果是list，给每个元素增加一个属性
       if (key in this.lists) this._addToken(key, value);
+
+      //if (attr[last] == value) return this;
+
+      attr[last] = value;
 
       this.fire('change:' + paths[0], {path: paths.slice(1), val: value});
       return this;

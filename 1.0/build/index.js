@@ -1193,10 +1193,12 @@ KISSY.add('gallery/bidi/1.0/models',function(S, evaluation){
 
       var last = paths[len - 1];
 
-      attr[last] = value;
-
       //如果是list，给每个元素增加一个属性
       if (key in this.lists) this._addToken(key, value);
+
+      //if (attr[last] == value) return this;
+
+      attr[last] = value;
 
       this.fire('change:' + paths[0], {path: paths.slice(1), val: value});
       return this;
@@ -1491,12 +1493,10 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
 
     var ret;
 
-    // select
     if (el.getDOMNode().tagName.toLowerCase() == 'select') {
       return el.val();
     }
 
-    // radio
     el.all('input').each(function(element){
       if (element.attr('checked')) {
         ret = element.val();
@@ -1541,7 +1541,7 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
 
         var val = getValue(el);
         if (val) {
-          model.set(paths[0] + '.defaultValue', el.all('input').val());
+          model.set(paths[0] + '.defaultValue', val);
         }
       },
 
@@ -1603,7 +1603,8 @@ KISSY.add('gallery/bidi/1.0/watch/radio',function(S){
       });
 
       var val = getRadioValue(el);
-      if (val) {
+
+      if (val && model.get(key) != val) {
         S.later(function(){
           model.set(key, val);
         });

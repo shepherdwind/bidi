@@ -6,12 +6,10 @@ KISSY.add(function(S, XTemplate){
 
     var ret;
 
-    // select
     if (el.getDOMNode().tagName.toLowerCase() == 'select') {
       return el.val();
     }
 
-    // radio
     el.all('input').each(function(element){
       if (element.attr('checked')) {
         ret = element.val();
@@ -56,7 +54,7 @@ KISSY.add(function(S, XTemplate){
 
         var val = getValue(el);
         if (val) {
-          model.set(paths[0] + '.defaultValue', el.all('input').val());
+          model.set(paths[0] + '.defaultValue', val);
         }
       },
 
