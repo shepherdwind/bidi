@@ -333,6 +333,11 @@ KISSY.add(function(S, evaluation){
      */
     set: function(key, value, parent){
 
+      //判断一个key是否是逻辑表达式，比如a > b, a == b，如果是，不执行set操作
+      if (/[<=>!|&]+/.test(key)) {
+        return;
+      }
+
       // 临时禁止set方法，在toJSON方法调用的时候需要如此
       if (this.__forbidden_call) return;
 

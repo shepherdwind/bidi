@@ -297,6 +297,15 @@
                   {{/watch}}
                 </div>
               </div>
+
+              <div class="form-group descriptions">
+                <label class="col-lg-2 control-label">退款金额: </label>
+                <div class="col-lg-10">
+                  <input type="text" name="refundFee" class="text-input refund-money J_RefundFee" value="{{value}}"
+                   {{watch "attr:goodsStatus.defaultValue == 0:disabled"}}>
+                </div>
+              </div>
+
               </form>
         </div>
       </script>
