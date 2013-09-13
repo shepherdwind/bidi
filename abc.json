@@ -4,10 +4,11 @@
     "desc":"mvvm for kissy",
     "cover":"",
     "author":{
-    "name":"hanwen.sah",
-    "email":"hanwen.sah@taobao.com",
-    "page":"http://shepehrdwind.com"
-},
+      "name":"hanwen.sah",
+      "email":"hanwen.sah@taobao.com",
+      "page":"http://shepehrdwind.com"
+    },
+    "tag": "MVVM",
     "type":"kissy-pie",
     "type-url":"http://abc.alibaba-inc.com/r/kissy-pie",
     "githubName":"shepherdwind"
