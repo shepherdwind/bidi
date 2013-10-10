@@ -124,7 +124,7 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
         this.on('inited', _init);
 
-        html = w.$html || html;
+        html = w.$html === undefined ? html : w.$html;
 
       } else {
 

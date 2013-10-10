@@ -2134,7 +2134,7 @@ KISSY.add('gallery/bidi/1.0/views',function(S, Event, XTemplate, Watch){
 
         this.on('inited', _init);
 
-        html = w.$html || html;
+        html = w.$html === undefined ? html : w.$html;
 
       } else {
 
