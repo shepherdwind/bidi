@@ -36,7 +36,10 @@ KISSY.add(function(S, Event, XTemplate, Watch){
 
       var html = this.template.render(json);
       html = html.replace(/>\s+>>><<</g, '');
-      this.el.html(html);
+
+      //this.el.html(html);
+      // ie 中el.html有点问题
+      this.el.getDOMNode().innerHTML = html;
 
       this.fire('inited');
 
