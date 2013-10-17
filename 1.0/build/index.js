@@ -1546,7 +1546,13 @@ KISSY.add('gallery/bidi/1.0/watch/each',function(S, XTemplate){
           var scopesNew = $control('scopes').slice();
           scopesNew.unshift(model.get(key));
           html = html.runtime.option.commands.each(scopesNew, option);
-          el.html(html);
+
+          // 火狐下对select进行innerHMTL有bug
+          if (S.UA.firefox) {
+            el[0].innerHTML = html;
+          } else {
+            el.html(html);
+          }
 
           model.set(paths[0] + '.defaultValue', getValue(el));
           $control('view').fire('inited');
