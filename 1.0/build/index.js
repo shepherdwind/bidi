@@ -1893,6 +1893,13 @@ KISSY.add('gallery/bidi/1.0/watch/value',function(S){
           el.attr('checked', model.get(key));
         });
 
+        var isChecked = el.attr('checked');
+
+        //默认值配置
+        if (isChecked) {
+          model.set(key, isChecked);
+        }
+
       },
 
       _bindEvent: function(){
