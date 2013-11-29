@@ -11,6 +11,9 @@ MVVM for KISSY
 
 ## changelog
 
+* 1.1 支持kissy1.4，因为1.4和1.3的Xtemplate的api有点不一致，所以，<em>1.1只能在1.4版本下使用</em>
+反之亦然，1.0仅支持kissy 1.3.x
+
 ### V1.0
 
 
