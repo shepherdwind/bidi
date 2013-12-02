@@ -224,11 +224,11 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
      */
     active: function(name){
 
-      if (S.isArray(name)){
-        S.each(name, addCommand);
-      } else {
-        addCommand(name);
-      }
+      //if (S.isArray(name)){
+        //S.each(name, addCommand);
+      //} else {
+        //addCommand(name);
+      //}
 
     },
 
@@ -280,7 +280,7 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
   };
 
-  Bidi.active(['print']);
+  //Bidi.active(['print']);
   return Bidi;
 
 }, {

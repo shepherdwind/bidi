@@ -1,0 +1,59 @@
+<script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed.js"></script>
+               <form action="mtop.serviceone.gaia.submitApply" class="J_ApplyForm">
+                    <div  class="bidi-viewer J_FormBidi" data-view="form">
+                        <script type="text/xtemplate">
+                            <ul class="c-table2 form-wrapper J_FormWrapper">
+                                <!--是否收到货-->
+                                {{@goodsStatus}}
+                                <li class="{{@if goodsStatus.hidden}}hidden{{/if}}">
+                                    <label>是否收到货：</label>
+                                    <div class="controls" {{watch "radio: goodsStatus.defaultValue"}}>
+                                    {{@each values}}
+                                        <input name="goodsStatus" type="radio" required required-msg="必须选择是否收到货！" msg-wrapper="#is-get-goods-auth-wrapper" value="{{value}}"
+                                        {{@if value === ../defaultValue}}checked{{/if}}
+                                        > {{text}}
+                                    {{/each}}
+                                    <div id="is-get-goods-auth-wrapper"></div>
+                                    </div>
+                                </li>
+                                {{/goodsStatus}}
+                             
+                            </ul>
+ 
+                        </script>
+                    </div>
+                </form>
+<script type="text/javascript">
+
+var srcPath = "../../../";
+KISSY.config({
+  packages:[
+    {
+      name: "gallery",
+      path: srcPath,
+      charset: "utf-8",
+      ignorePackageNameInUri: true
+    }
+  ]
+});
+
+KISSY.use('node,gallery/bidi/1.1/,xtemplate', function (S,Node,Bidi) {
+
+  var data = {
+    "goodsStatus": {
+      "hidden": false,
+      "label": "是否收到货", 
+      "required": true,
+      "values": [
+        {"checked": "", "msg": "", "reasons": [752], "text": "未收到货", "value": 1},
+        {"checked": "", "msg": "", "reasons": [753, 754, 755, 756], "text": "已收到货", "value": 2}
+      ]
+    }
+  };
+
+  //Bidi.active(['class', 'text', 'value', 'select', 'click', 'attr']);
+  var form = Bidi.xbind('form', data);
+  Bidi.init();
+
+});
+</script>

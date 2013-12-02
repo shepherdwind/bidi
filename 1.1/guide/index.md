@@ -24,6 +24,8 @@ MVVM for KISSY
 
 三个括号的形式，不转义。
 
+此外，1.0支持`Bidi.active`接口现在无效了，没法使用，容易和其他变量冲突。
+
 ### simple use
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/AAEZP/1/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
