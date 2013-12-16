@@ -2451,11 +2451,11 @@ KISSY.add('gallery/bidi/1.1/index',function (S, Node, Base, XTemplate, Model, Vi
      */
     active: function(name){
 
-      if (S.isArray(name)){
-        S.each(name, addCommand);
-      } else {
-        addCommand(name);
-      }
+      //if (S.isArray(name)){
+        //S.each(name, addCommand);
+      //} else {
+        //addCommand(name);
+      //}
 
     },
 
@@ -2507,7 +2507,7 @@ KISSY.add('gallery/bidi/1.1/index',function (S, Node, Base, XTemplate, Model, Vi
 
   };
 
-  Bidi.active(['print']);
+  //Bidi.active(['print']);
   return Bidi;
 
 }, {
