@@ -2025,11 +2025,12 @@ KISSY.add('gallery/bidi/1.1/views',function(S, Event, XTemplate, Watch){
 
   "use strict";
 
-  function View(name, model){
+  function View(name, model, html){
 
     this.model = model;
     this.name = name;
     this.elements = [];
+    this.html = html;
 
   }
 
@@ -2038,10 +2039,12 @@ KISSY.add('gallery/bidi/1.1/views',function(S, Event, XTemplate, Watch){
     setEl: function(el){
 
       this.el = el;
-      this.template = new XTemplate(el.all('script').html());
+      var html = this.html ? this.html : el.all('script').html();
+
+      this.template = new XTemplate(html);
 
       if (this.template) {
-        S.log('get template html from script/xtempalte')
+        S.log('get template html from script/xtempalte');
       } else {
         S.error('Get template html form script/xtempalte, got none');
       }
@@ -2146,7 +2149,7 @@ KISSY.add('gallery/bidi/1.1/views',function(S, Event, XTemplate, Watch){
 
           this.elements.push( { key: key, el: el } );
           this.detach('inited', _init);
-        }
+        };
 
         this.on('inited', _init);
 
@@ -2459,13 +2462,13 @@ KISSY.add('gallery/bidi/1.1/index',function (S, Node, Base, XTemplate, Model, Vi
 
     },
 
-    xbind: function(name, obj, augment){
+    xbind: function(name, obj, augment, template){
 
       if (!S.isString(name)) {
         throw new Error('Bidi init fail, name must be string');
       }
 
-      Views[name] = new View(name, new Model(obj, augment));
+      Views[name] = new View(name, new Model(obj, augment), template);
       S.log('init bidi, add view ' + name)
       return Views[name];
 
