@@ -232,13 +232,13 @@ KISSY.add(function (S, Node, Base, XTemplate, Model, View, Watcher, macro){
 
     },
 
-    xbind: function(name, obj, augment){
+    xbind: function(name, obj, augment, template){
 
       if (!S.isString(name)) {
         throw new Error('Bidi init fail, name must be string');
       }
 
-      Views[name] = new View(name, new Model(obj, augment));
+      Views[name] = new View(name, new Model(obj, augment), template);
       S.log('init bidi, add view ' + name)
       return Views[name];
 

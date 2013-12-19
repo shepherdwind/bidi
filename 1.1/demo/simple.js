@@ -1,5 +1,5 @@
-KISSY.add(function(S, Bidi){
-  Bidi.active(['text', 'click']);
+KISSY.add(function(S, Bidi, html){
+  //Bidi.active(['text', 'click']);
   var view = Bidi.xbind('user', {
     a: "1",
     text: 'haha',
@@ -13,9 +13,9 @@ KISSY.add(function(S, Bidi){
       var lastName = this.get('lastName').toUpperCase();
       this.set('lastName', lastName);
     }
-  });
+  }, html);
 
   return view;
 }, {
-  requires: ['../index']
-})
+  requires: ['../index', './simpltex-tpl']
+});
