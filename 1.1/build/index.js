@@ -1548,11 +1548,11 @@ KISSY.add('gallery/bidi/1.1/watch/each',function(S, XTemplate){
           html = html.config.commands.each(scopesNew, option);
 
           // 火狐下对select进行innerHMTL有bug
-          if (S.UA.firefox) {
-            el[0].innerHTML = html;
-          } else {
-            el.html(html);
-          }
+          //if (S.UA.firefox) {
+          el[0].innerHTML = html;
+          //} else {
+          //el.html(html);
+          //}
 
           model.set(paths[0] + '.defaultValue', getValue(el));
           $control('view').fire('inited');
