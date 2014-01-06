@@ -44,7 +44,7 @@ KISSY.add(function(S){
 
     });
 
-  }
+  };
 
 }, {
 });
