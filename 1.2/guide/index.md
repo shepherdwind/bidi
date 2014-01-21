@@ -33,6 +33,99 @@ MVVM for KISSY
 
 ### simple use
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/AAEZP/1/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+### 表单联动实现
 
-<iframe width="100%" height="500" src="http://jsfiddle.net/AAEZP/3/embedded/result,html,js/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+1. 场景，点击radio，根据radio的值进行
+
+```html
+<div {{watch "radio: reasons.defaultValue"}}>
+  {{@each reasons.values}}
+    <label class="radio-inline">
+      <input type="radio" name="hello" value="{{value}}"/>{{text}} <br>
+    </label>
+  {{/each}}
+</div>
+<p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
+```
+
+```js
+  Bidi.xbind('form', {
+
+    reasons: {
+      defaultValue: null,
+      name: "reasons",
+      values: [
+        { value: 11, text: '尺寸、尺码不符', judge: true, title: "desc" },
+        { value: 12, text: '拼接、走线不齐' },
+        { value: 21, text: '材质不符', judge: true },
+        { value: 22, text: '严重缩水、褪色、起球、掉毛' },
+        { value: 31, text: '收到商品时有破损' },
+        { value: 32, text: '拼接、走线不齐', judge: true },
+        { value: 33, text: '开线、走丝', judge: true },
+        { value: 44, text: '有污渍' },
+        { value: 45, text: '配件破损或不符' }
+      ]
+    }
+
+  });
+
+  Bidi.init();
+```
+
+example1:
+
+<div class="container bidi-viewer" data-view="form-1">
+  <script type="text/xtemplte">
+    <div {{watch "radio: reasons.defaultValue"}}>
+      {{@each reasons}}
+        <label class="radio-inline">
+          <input type="radio" name="hello" value="{{value}}"/>{{text}}
+        </label>
+      {{/each}}
+    </div>
+    <p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
+  </script>
+</div>
+
+<script src="http://g.tbcdn.cn/kissy/k/1.4.1/seed.js" charset="utf-8"></script>
+<script type="text/javascript">
+  var S = KISSY;
+  S.Config.debug = true;
+  if (S.Config.debug) {
+    var srcPath = "../../../";
+    S.config({
+      packages:[
+        {
+          name: "gallery",
+          path: srcPath,
+          charset: "utf-8",
+          ignorePackageNameInUri: true
+        }
+      ]
+    });
+  }
+
+  S.use('gallery/bidi/1.2/index', function(S, Bidi){
+
+    Bidi.xbind('form-1', {
+      reasons: {
+        defaultValue: null,
+        name: "reasons",
+        values: [
+          { value: 11, text: '尺寸、尺码不符', judge: true, title: "desc" },
+          { value: 12, text: '拼接、走线不齐' },
+          { value: 21, text: '材质不符', judge: true },
+          { value: 22, text: '严重缩水、褪色、起球、掉毛' },
+          { value: 31, text: '收到商品时有破损' },
+          { value: 32, text: '拼接、走线不齐', judge: true },
+          { value: 33, text: '开线、走丝', judge: true },
+          { value: 44, text: '有污渍' },
+          { value: 45, text: '配件破损或不符' }
+        ]
+      }
+    });
+
+    Bidi.init();
+
+  });
+</script>
