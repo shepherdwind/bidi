@@ -31,8 +31,11 @@ MVVM for KISSY
 
 此外，1.0支持`Bidi.active`接口现在无效了，没法使用，容易和其他变量冲突。
 
+### [watch语法](./watch.html)
+
 ### simple use
 
 ### 表单联动实现
 
-1. 场景，点击radio，根据radio的值进行显示某些值[example1](./example1.html)
+1. 场景，点击radio，根据radio的值进行显示某些值[example1](./example1.html)，
+   [jsfiddle](http://jsfiddle.net/AAEZP/6/embedded/result,js,html,css/)

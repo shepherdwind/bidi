@@ -1,16 +1,41 @@
 ## 场景1
 
-联动的基本实现
+radio的变动，改变相关的dom。
+
+<div class="container bidi-viewer" data-view="form-1">
+
+  <script type="text/xtemplte">
+    <div {{watch "radio: reasons.defaultValue"}}>
+      {{@each reasons.values}}
+        <label class="radio-inline">
+          <input type="radio" name="hello" value="{{value}}"/>{{text}}
+        </label>
+      {{/each}}
+    </div>
+    <p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
+  </script>
+
+</div>
+
+### 绑定过程
+
+使用了两个绑定，radio和
 
 ```html
-<div {{watch "radio: reasons.defaultValue"}}>
-  {{@each reasons.values}}
-    <label class="radio-inline">
-      <input type="radio" name="hello" value="{{value}}"/>{{text}} <br>
-    </label>
-  {{/each}}
+<div class="container bidi-viewer" data-view="form-1">
+
+  <script type="text/xtemplte">
+    <div {{watch "radio: reasons.defaultValue"}}>
+      {{@each reasons.values}}
+        <label class="radio-inline">
+          <input type="radio" name="hello" value="{{value}}"/>{{text}}
+        </label>
+      {{/each}}
+    </div>
+    <p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
+  </script>
+
 </div>
-<p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
 ```
 
 ```js
@@ -37,20 +62,6 @@
   Bidi.init();
 ```
 
-example1:
-
-<div class="container bidi-viewer" data-view="form-1">
-  <script type="text/xtemplte">
-    <div {{watch "radio: reasons.defaultValue"}}>
-      {{@each reasons.values}}
-        <label class="radio-inline">
-          <input type="radio" name="hello" value="{{value}}"/>{{text}}
-        </label>
-      {{/each}}
-    </div>
-    <p {{watch "class:reasons.$item.judge:hide"}}>I have reasons.$item.judge</p>
-  </script>
-</div>
 
 <script src="http://g.tbcdn.cn/kissy/k/1.4.1/seed.js" charset="utf-8"></script>
 <script type="text/javascript">
