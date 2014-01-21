@@ -77,7 +77,7 @@ example1:
 <div class="container bidi-viewer" data-view="form-1">
   <script type="text/xtemplte">
     <div {{watch "radio: reasons.defaultValue"}}>
-      {{@each reasons}}
+      {{@each reasons.values}}
         <label class="radio-inline">
           <input type="radio" name="hello" value="{{value}}"/>{{text}}
         </label>
