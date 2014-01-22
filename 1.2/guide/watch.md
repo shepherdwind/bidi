@@ -81,7 +81,7 @@ else
 
 联动关系，联动是操作在集合上，所以是块级命令。bidi使用的方案如下
 
-![联动关系]http://gtms04.alicdn.com/tps/i4/T1ZvIIFjdkXXamTp3B-751-436.png)
+![联动关系](http://gtms04.alicdn.com/tps/i4/T1ZvIIFjdkXXamTp3B-751-436.png)
 
 联动元素的数据和表单元素的select或者radio集合形成对应，一个select应该有一个value，
 和多个可选的value，对应的js对象如下：
