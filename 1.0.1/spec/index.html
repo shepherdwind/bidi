@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="mocha.css" />
     <link rel="stylesheet" href="../demo/bootstrap.css" />
-    <script src="http://g.tbcdn.cn/kissy/k/1.4.1/seed.js" charset="utf-8"></script>
-    <!--<script src="http://g.assets.daily.taobao.net/kissy/k/1.4.2/seed.js" charset="utf-8"></script>-->
+    <!--<script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js" charset="utf-8"></script>-->
+    <script src="http://g.tbcdn.cn/kissy/k/1.3.1/seed.js" charset="utf-8"></script>
   </head>
 
   <body>
@@ -28,7 +28,21 @@
     </ul>
   </div>
 
-    <div class="container bidi-viewer" data-view="user"></div>
+    <div class="container bidi-viewer" data-view="user">
+        <script type="text/xtemplate">
+          <div class="panel panel-primary">
+            <div class="panel-heading">示例1,简单情况. <a class="pull-right" href="http://jsfiddle.net/AAEZP/1/embedded/result,html,js/">Edit It &gt;&gt;</a>
+            </div>
+            <p>hello, I am <strong {{text "fullName"}}></strong></p>
+            <p>hello, I am <strong {{text "firstName"}}></strong></p>
+            First Name: <input {{value "firstName"}}/><br>
+            Last Name: <input {{value "lastName"}}/>
+            <button {{click "capitalizeLastName"}}>Go caps</button>
+          </div>
+          <input type="hidden" {{watch "attr: a == 1: disabled"}}/>
+          <input type="hidden" {{watch "attr: a === 1: disabled"}}/>
+        </script>
+    </div>
 
     <div class="container bidi-viewer" data-view="form">
       <script type="text/xtemplte">
@@ -40,15 +54,15 @@
                 <label class="col-lg-2 control-label">退款原因: </label>
                 <div class="col-lg-10">
                   <p class="form-control-static">
-                    <span {{watch "class: isEdit: hide"}}>
-                      <em {{{watch "text: problem.$item.text"}}}></em>
+                    <span {{class "isEdit: hide"}}>
+                      <em {{text "problem.$item.text"}}></em>
                     </span>
                     <select name="key1" {{watch "select: problem.defaultValue" "class: !isEdit: hide"}}>
                       {{#each problem.values}}
                       <option value="{{value}}">{{text}}</option>
                       {{/each}}
                     </select>
-                    <a href="#nowhere" {{watch "click: editable"}}>修改</a>
+                    <a href="#nowhere" {{click "editable"}}>修改</a>
                   </p>
                 </div>
               </div>
@@ -59,7 +73,7 @@
                 <div class="col-lg-10">
                   {{#watch "linkage: reasons.values: problem" "radio: reasons.defaultValue"}}
                   <label class="radio-inline">
-                    <input type="radio" name="{{../name}}" value="{{value}}" {{watch "print: reasons.values.length == 1: checked"}}/>
+                    <input type="radio" name="{{../name}}" value="{{value}}" {{print "reasons.values.length == 1: checked"}}/>
                     {{text}}
                   </label>
                   {{/watch}}
@@ -98,7 +112,7 @@
                     <option value="{{value}}">{{text}}</option>
                   {{/each}}
                   </select>
-                  退款额度<span class="label label-info realmax" {{{watch "text: realMax"}}}></span>
+                  退款额度<span class="label label-info realmax" {{text "realMax"}}></span>
                   </p>
                 </div>
               </div>
@@ -138,7 +152,7 @@
 
               <div class="form-group">
                 <p class="col-lg-offset-2 col-lg-10"">
-                <input type="button" value="提交" class="btn btn-default" {{watch "click: submit"}}/>
+                <input type="button" value="提交" class="btn btn-default" {{click "submit"}}/>
                 </p>
               </div>
 
@@ -153,7 +167,7 @@
       <script type="text/xtemplate">
         <div class="panel panel-primary">
           <div class="panel-heading">示例3，list</div>
-          <h2>Your seat reservations (<span {{{watch "text: seats.length"}}}></span>)</h2>
+          <h2>Your seat reservations (<span {{watch "text: seats.length"}}></span>)</h2>
           <table class="table table-bordered">
             <thead>
               <tr>
@@ -166,14 +180,14 @@
                 <td><input value="{{name}}" /></td>
                 <td><select {{watch "select: meal"}}>
                     {{#each ../meals}}
-                      {{#if ../meal===xindex}}
+                      {{#if ../meal === xindex}}
                       <option value="{{value}}" selected="selected">{{mealName}}</option>
                       {{else}}
                       <option value="{{value}}">{{mealName}}</option>
                       {{/if}}
                     {{/each}}
                 </select></td>
-                <td class="price" {{{watch "text: $root.price: formattedPrice"}}}></td>
+                <td class="price" {{watch "text: $root.price: formattedPrice"}}></td>
                 <td><a class="btn btn-danger" href="#nowhere" {{watch "click: $root.remove"}}>Remove</a></td>
               </tr>
               {{/watch}}
@@ -183,7 +197,7 @@
           <button class="btn btn-primary" {{watch "click: addSeat" "attr: seats.length > 5: disabled"}}>Reserve another seat</button>
 
           <h3 {{watch "class: totalSurcharge <= 0: hide"}}>
-            Total surcharge: <span {{{watch "text: totalSurcharge: formattedPrice"}}}></span>
+            Total surcharge: <span {{watch "text: totalSurcharge: formattedPrice"}}></span>
           </h3>
         </div>
       </script>
@@ -251,7 +265,7 @@
                     {{#each goodsStatus.values}}
                       <label class="radio-inline">
                           <input name="goodsStatus" type="radio" class="radio" value="{{value}}" 
-                          {{#if value===goodsStatus.defaultValue}}checked{{/if}} > {{text}}
+                          {{#if value === goodsStatus.defaultValue}}checked{{/if}} > {{text}}
                       </label>
                     {{/each}}
                 </div>
@@ -263,8 +277,8 @@
                   <p class="form-control-static">
                     <select name="select1">
                       {{#watch  "linkage: reasons.values: goodsStatus" "select:reasons.defaultValue"}}
-                      {{@if xindex}} {{else}}<option value="-1" {{watch "print: !reasons.defaultValue:selected"}}>请选择原因</option> {{/if}}
-                      <option value="{{value}}" {{#if value===reasons.defaultValue}}selected{{/if}}>{{text}}</option>
+                      {{@if xindex}} {{else}}<option value="-1" {{print "!reasons.defaultValue:selected"}}>请选择原因</option> {{/if}}
+                      <option value="{{value}}" {{#if value === reasons.defaultValue}}selected{{/if}}>{{text}}</option>
                       {{/watch}}
                     </select>
                     <input type="hidden" name="reasonsText" {{watch "value: reasons.$item.text"}}>
@@ -277,7 +291,7 @@
                 <div class="col-lg-10">
                   {{#watch "linkage: descriptions.values: reasons" "radio: descriptions.defaultValue"}}
                   <label class="radio-inline">
-                    <input type="radio" name="aaa" value="{{value}}" {{watch "print: descriptions.values.length == 1: checked"}}/>
+                    <input type="radio" name="aaa" value="{{value}}" {{print "descriptions.values.length == 1: checked"}}/>
                     {{text}}
                   </label>
                   {{/watch}}
@@ -305,7 +319,6 @@
 
     <script type="text/javascript">
       var S = KISSY;
-      S.Config.debug = true;
       if (S.Config.debug) {
         var srcPath = "../../../";
         S.config({
@@ -319,7 +332,7 @@
           ]
         });
       }
-      S.use('gallery/bidi/1.3/spec/bidi')
+      S.use('gallery/bidi/1.0.1/spec/bidi')
     </script>
   </body>
 </html>

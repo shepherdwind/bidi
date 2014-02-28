@@ -28,7 +28,7 @@ KISSY.add(function(S, Bidi, simple, form, lists, webmail, formH, Uri){
   Bidi.init(grep);
 
   if (!query.has('noSpec')) {
-    S.use('gallery/bidi/1.3/spec/runner');
+    S.use('gallery/bidi/1.0.1/spec/runner');
   }
 
   S.all('.nav-tabs').all('a').each(function(el){
